@@ -1,4 +1,4 @@
-package cn.chahuyun.session.data;
+package cn.chahuyun.session.data.factory;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;

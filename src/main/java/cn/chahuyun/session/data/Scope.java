@@ -1,6 +1,7 @@
-package cn.chahuyun.session.entity;
+package cn.chahuyun.session.data;
 
-import cn.chahuyun.session.data.DataFactory;
+import cn.chahuyun.session.data.factory.DataFactory;
+import cn.chahuyun.session.data.entity.GroupList;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.event.events.GroupEvent;
 

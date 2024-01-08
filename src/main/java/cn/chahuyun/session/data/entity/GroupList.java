@@ -1,4 +1,4 @@
-package cn.chahuyun.session.entity;
+package cn.chahuyun.session.data.entity;
 
 import cn.hutool.core.util.ArrayUtil;
 import jakarta.persistence.*;

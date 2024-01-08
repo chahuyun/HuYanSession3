@@ -1,6 +1,6 @@
-package cn.chahuyun.session.entity.api;
+package cn.chahuyun.session.data.api;
 
-import cn.chahuyun.session.entity.Scope;
+import cn.chahuyun.session.data.Scope;
 
 /**
  * 用于获取对于的实体的所属作用域

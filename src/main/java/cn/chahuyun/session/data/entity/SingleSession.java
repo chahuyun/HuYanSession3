@@ -1,5 +1,7 @@
-package cn.chahuyun.session.entity;
+package cn.chahuyun.session.data.entity;
 
+import cn.chahuyun.session.data.BaseEntity;
+import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.enums.SessionType;
 import jakarta.persistence.*;
 

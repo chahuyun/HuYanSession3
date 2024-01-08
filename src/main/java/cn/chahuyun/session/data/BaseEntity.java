@@ -1,6 +1,6 @@
-package cn.chahuyun.session.entity;
+package cn.chahuyun.session.data;
 
-import cn.chahuyun.session.entity.api.ScopeAcquisition;
+import cn.chahuyun.session.data.api.ScopeAcquisition;
 import lombok.Data;
 
 /**

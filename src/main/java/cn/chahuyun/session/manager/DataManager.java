@@ -3,7 +3,7 @@ package cn.chahuyun.session.manager;
 import cn.chahuyun.session.HuYanSession;
 import cn.chahuyun.session.config.DataConfig;
 import cn.chahuyun.session.config.PluginConfig;
-import cn.chahuyun.session.data.DataFactory;
+import cn.chahuyun.session.data.factory.DataFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
