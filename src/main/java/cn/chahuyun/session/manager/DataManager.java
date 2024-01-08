@@ -23,24 +23,24 @@ import java.util.Properties;
 public class DataManager {
 
     /**
-     * 数据库连接前缀
-     */
-    private static final String H2_BASE_PATH = "jdbc:h2:file:./data/cn.chahuyun.HuYanSession/HuYan";
-    private static final String SQLITE_BASE_PATH = "jdbc:sqlite:file:./data/cn.chahuyun.HuYanSession/HuYan.sqlite";
-    private static final String MYSQL_BASE_PATH = "jdbc:mysql://";
-    /**
      * Hibernate数据库驱动
      */
     public static final String HIBERNATE_CONNECTION_DRIVER_CLASS_H2 = "org.h2.Driver";
     public static final String HIBERNATE_CONNECTION_DRIVER_CLASS_SQLITE = "";
     public static final String HIBERNATE_CONNECTION_DRIVER_CLASS_MYSQL = "com.mysql.cj.jdbc.Driver";
-
+    /**
+     * 数据库连接前缀
+     */
+    private static final String H2_BASE_PATH = "jdbc:h2:file:./data/cn.chahuyun.HuYanSession/HuYan";
+    private static final String SQLITE_BASE_PATH = "jdbc:sqlite:file:./data/cn.chahuyun.HuYanSession/HuYan.sqlite";
+    private static final String MYSQL_BASE_PATH = "jdbc:mysql://";
     private static final PluginConfig config = HuYanSession.config;
 
     private static final DataConfig dataConfig = DataConfig.INSTANCE;
 
     /**
      * 加载数据库
+     *
      * @param plugin 插件
      */
     public static void init(HuYanSession plugin) {
@@ -62,7 +62,7 @@ public class DataManager {
         try {
             sessionFactory = configuration.buildSessionFactory();
         } catch (HibernateException e) {
-            log.error("数据库初始化错误!",e);
+            log.error("数据库初始化错误!", e);
         }
         DataFactory.dataFactoryLoad(sessionFactory);
     }
@@ -119,7 +119,7 @@ public class DataManager {
      */
     private static Properties mySqlBase(MiraiHibernateConfiguration configuration) {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.connection.url", MYSQL_BASE_PATH+dataConfig.getUrl());
+        properties.setProperty("hibernate.connection.url", MYSQL_BASE_PATH + dataConfig.getUrl());
         properties.setProperty("hibernate.connection.driver_class", HIBERNATE_CONNECTION_DRIVER_CLASS_MYSQL);
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         properties.setProperty("hibernate.connection.CharSet", "utf8mb4");

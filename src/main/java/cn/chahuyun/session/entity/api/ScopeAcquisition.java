@@ -1,4 +1,6 @@
-package cn.chahuyun.session.entity;
+package cn.chahuyun.session.entity.api;
+
+import cn.chahuyun.session.entity.Scope;
 
 /**
  * 用于获取对于的实体的所属作用域
@@ -10,6 +12,7 @@ public interface ScopeAcquisition {
 
     /**
      * 获取所属作用域
+     *
      * @return 作用域
      */
     Scope getScope();

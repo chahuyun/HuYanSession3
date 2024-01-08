@@ -2,7 +2,6 @@ package cn.chahuyun.session;
 
 import cn.chahuyun.session.config.DataConfig;
 import cn.chahuyun.session.config.PluginConfig;
-import cn.chahuyun.session.data.DataFactory;
 import cn.chahuyun.session.manager.DataManager;
 import cn.chahuyun.session.manager.PluginManager;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +24,8 @@ public final class HuYanSession extends JavaPlugin {
     private HuYanSession() {
         super(new JvmPluginDescriptionBuilder("cn.chahuyun.huyan-session-3", "0.0.1")
                 .name("HuYanSession")
-                .dependsOn("xyz.cssxsh.mirai.plugin.mirai-hibernate-plugin",false)
-                .dependsOn("cn.chahuyun.HuYanAuthorize",true)
+                .dependsOn("xyz.cssxsh.mirai.plugin.mirai-hibernate-plugin", false)
+                .dependsOn("cn.chahuyun.HuYanAuthorize", true)
                 .info("屎山3")
                 .author("Moyuyanli")
                 .build());

@@ -1,5 +1,6 @@
 package cn.chahuyun.session.entity;
 
+import cn.chahuyun.session.entity.api.ScopeAcquisition;
 import lombok.Data;
 
 /**
@@ -13,7 +14,6 @@ public class BaseEntity implements ScopeAcquisition {
 
     private String scopeMarker;
 
-
     /**
      * 获取所属作用域
      *
@@ -21,6 +21,6 @@ public class BaseEntity implements ScopeAcquisition {
      */
     @Override
     public Scope getScope() {
-        return null;
+        return new Scope(scopeMarker);
     }
 }
