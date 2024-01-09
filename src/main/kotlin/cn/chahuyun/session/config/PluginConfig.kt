@@ -18,7 +18,7 @@ object PluginConfig : AutoSavePluginConfig("config") {
     var owner: Long by value()
 
     @ValueDescription("数据库链接方式")
-    var dataType:DataType by value(DataType.SQLITE)
+    var dataType:DataType by value(DataType.H2)
 
     @ValueDescription("权限前置")
     var permType:PermType by value(PermType.DEFAULT)

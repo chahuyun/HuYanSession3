@@ -1,7 +1,8 @@
 package cn.chahuyun.session.data;
 
 import cn.chahuyun.session.data.api.ScopeAcquisition;
-import lombok.Data;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * 基础类
@@ -9,9 +10,10 @@ import lombok.Data;
  * @author Moyuyanli
  * @date 2024/1/3 15:26
  */
-@Data
+@MappedSuperclass
 public class BaseEntity implements ScopeAcquisition {
 
+    @Column(name = "scope_marker")
     private String scopeMarker;
 
     /**
@@ -22,5 +24,13 @@ public class BaseEntity implements ScopeAcquisition {
     @Override
     public Scope getScope() {
         return new Scope(scopeMarker);
+    }
+
+    public String getScopeMarker() {
+        return scopeMarker;
+    }
+
+    public void setScopeMarker(String scopeMarker) {
+        this.scopeMarker = scopeMarker;
     }
 }

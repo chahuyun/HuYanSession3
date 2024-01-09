@@ -1,7 +1,6 @@
 package cn.chahuyun.session.data.entity;
 
 import cn.chahuyun.session.data.BaseEntity;
-import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.enums.SessionType;
 import jakarta.persistence.*;
 
@@ -15,8 +14,11 @@ import jakarta.persistence.*;
 @Table(name = "session_single")
 public class SingleSession extends BaseEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(name = "`trigger`")
     private String trigger;
 
     private String reply;
@@ -35,8 +37,6 @@ public class SingleSession extends BaseEntity {
         this.type = type;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -90,33 +90,22 @@ public class SingleSession extends BaseEntity {
         }
     }
 
-    @Override
-    public String getScopeMarker() {
-        return super.getScopeMarker();
-    }
-
-    @Override
-    public void setScopeMarker(String scopeMarker) {
-        super.setScopeMarker(scopeMarker);
-    }
-
-    /**
-     * 获取所属作用域
-     *
-     * @return 作用域
-     */
-    @Override
-    @Transient
-    public Scope getScope() {
-        return super.getScope();
-    }
-
-    @Transient
     public SessionType getSessionType() {
         return type;
     }
 
     public void setSessionType(SessionType type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "SingleSession{" +
+                "id=" + id +
+                ", trigger='" + trigger + '\'' +
+                ", reply='" + reply + '\'' +
+                ", dynamic='" + dynamic + '\'' +
+                ", type=" + type +
+                '}';
     }
 }

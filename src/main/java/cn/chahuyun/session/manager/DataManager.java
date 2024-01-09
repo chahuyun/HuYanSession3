@@ -4,6 +4,7 @@ import cn.chahuyun.session.HuYanSession;
 import cn.chahuyun.session.config.DataConfig;
 import cn.chahuyun.session.config.PluginConfig;
 import cn.chahuyun.session.data.factory.DataFactory;
+import jakarta.persistence.GenerationType;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -26,13 +27,13 @@ public class DataManager {
      * Hibernate数据库驱动
      */
     public static final String HIBERNATE_CONNECTION_DRIVER_CLASS_H2 = "org.h2.Driver";
-    public static final String HIBERNATE_CONNECTION_DRIVER_CLASS_SQLITE = "";
+    public static final String HIBERNATE_CONNECTION_DRIVER_CLASS_SQLITE = "org.sqlite.JDBC";
     public static final String HIBERNATE_CONNECTION_DRIVER_CLASS_MYSQL = "com.mysql.cj.jdbc.Driver";
     /**
      * 数据库连接前缀
      */
-    private static final String H2_BASE_PATH = "jdbc:h2:file:./data/cn.chahuyun.HuYanSession/HuYan";
-    private static final String SQLITE_BASE_PATH = "jdbc:sqlite:file:./data/cn.chahuyun.HuYanSession/HuYan.sqlite";
+    private static final String H2_BASE_PATH = "jdbc:h2:file:./data/cn.chahuyun.huyan-session-3/HuYan";
+    private static final String SQLITE_BASE_PATH = "jdbc:sqlite:file:./data/cn.chahuyun.huyan-session-3/HuYan.sqlite";
     private static final String MYSQL_BASE_PATH = "jdbc:mysql://";
     private static final PluginConfig config = HuYanSession.config;
 
@@ -75,7 +76,8 @@ public class DataManager {
     private static Properties sqliteBase(MiraiHibernateConfiguration configuration) {
         Properties properties = new Properties();
         properties.setProperty("hibernate.connection.url", SQLITE_BASE_PATH);
-//        properties.setProperty("hibernate.connection.driver_class", HIBERNATE_CONNECTION_DRIVER_CLASS_SQLITE);
+//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLiteDialect");
+        properties.setProperty("hibernate.connection.driver_class", HIBERNATE_CONNECTION_DRIVER_CLASS_SQLITE);
         properties.setProperty("hibernate.connection.provider_class", "org.hibernate.hikaricp.internal.HikariCPConnectionProvider");
         properties.setProperty("hibernate.connection.isolation", "1");
         properties.setProperty("hibernate.hbm2ddl.auto", "update");

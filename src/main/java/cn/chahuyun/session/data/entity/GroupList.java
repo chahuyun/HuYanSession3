@@ -26,6 +26,7 @@ public class GroupList {
     /**
      * 群字符串
      */
+    @Column(name = "`groups`")
     private String groups;
 
     /**

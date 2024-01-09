@@ -1,7 +1,7 @@
 package cn.chahuyun.session.data;
 
-import cn.chahuyun.session.data.factory.DataFactory;
 import cn.chahuyun.session.data.entity.GroupList;
+import cn.chahuyun.session.data.factory.DataFactory;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.event.events.GroupEvent;
 
@@ -29,6 +29,11 @@ public class Scope {
      * 全局
      */
     private Boolean global = false;
+
+    public Scope(Long group) {
+        this.marker = group.toString();
+        this.group.add(group);
+    }
 
     public Scope(String marker) {
         this.marker = marker;

@@ -2,6 +2,8 @@ package cn.chahuyun.session;
 
 import cn.chahuyun.session.config.DataConfig;
 import cn.chahuyun.session.config.PluginConfig;
+import cn.chahuyun.session.data.entity.SingleSession;
+import cn.chahuyun.session.data.factory.DataFactory;
 import cn.chahuyun.session.manager.DataManager;
 import cn.chahuyun.session.manager.PluginManager;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +11,8 @@ import net.mamoe.mirai.console.extension.PluginComponentStorage;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 @Slf4j
 public final class HuYanSession extends JavaPlugin {
@@ -47,6 +51,10 @@ public final class HuYanSession extends JavaPlugin {
         log.info("加载数据库...");
         DataManager.init(this);
 
+        List<SingleSession> singleSession = DataFactory.INSTANCE.selectListEntity(SingleSession.class, "from SingleSession where trigger = '%s'",123);
+        for (SingleSession singleMessage : singleSession) {
+            log.info("singleMessage->" + singleMessage);
+        }
 
         getLogger().info("Plugin loaded!");
     }
