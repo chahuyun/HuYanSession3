@@ -17,6 +17,21 @@ public class Permission extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    private Long qq;
+
+    private boolean admin;
+
+    private boolean session;
+
+    private boolean dct;
+
+    private boolean ds;
+
+    private boolean hh;
+
+    private boolean list;
+
+
     public Integer getId() {
         return id;
     }
@@ -24,6 +39,8 @@ public class Permission extends BaseEntity {
     public void setId(Integer id) {
         this.id = id;
     }
+
+
 
 
 }

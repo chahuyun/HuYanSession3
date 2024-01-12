@@ -1,7 +1,7 @@
 package cn.chahuyun.session;
 
-import cn.chahuyun.session.config.DataConfig;
-import cn.chahuyun.session.config.PluginConfig;
+import cn.chahuyun.session.config.SessionDataConfig;
+import cn.chahuyun.session.config.SessionPluginConfig;
 import cn.chahuyun.session.data.entity.SingleSession;
 import cn.chahuyun.session.data.factory.DataFactory;
 import cn.chahuyun.session.manager.DataManager;
@@ -22,11 +22,14 @@ public final class HuYanSession extends JavaPlugin {
     /**
      * 插件配置
      */
-    public static PluginConfig config = PluginConfig.INSTANCE;
+    public static SessionPluginConfig config = SessionPluginConfig.INSTANCE;
+
+
+    public static final String VERSION = "1.0.0";
 
 
     private HuYanSession() {
-        super(new JvmPluginDescriptionBuilder("cn.chahuyun.huyan-session-3", "0.0.1")
+        super(new JvmPluginDescriptionBuilder("cn.chahuyun.huyan-session-3", VERSION)
                 .name("HuYanSession")
                 .dependsOn("xyz.cssxsh.mirai.plugin.mirai-hibernate-plugin", false)
                 .dependsOn("cn.chahuyun.HuYanAuthorize", true)
@@ -45,7 +48,7 @@ public final class HuYanSession extends JavaPlugin {
     public void onEnable() {
         log.info("加载配置文件...");
         reloadPluginConfig(config);
-        reloadPluginConfig(DataConfig.INSTANCE);
+        reloadPluginConfig(SessionDataConfig.INSTANCE);
         PluginManager.INSTANCE.configLoad(config);
 
         log.info("加载数据库...");

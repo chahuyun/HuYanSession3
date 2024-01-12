@@ -1,10 +1,9 @@
 package cn.chahuyun.session.manager;
 
 import cn.chahuyun.session.HuYanSession;
-import cn.chahuyun.session.config.DataConfig;
-import cn.chahuyun.session.config.PluginConfig;
+import cn.chahuyun.session.config.SessionDataConfig;
+import cn.chahuyun.session.config.SessionPluginConfig;
 import cn.chahuyun.session.data.factory.DataFactory;
-import jakarta.persistence.GenerationType;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
@@ -35,9 +34,9 @@ public class DataManager {
     private static final String H2_BASE_PATH = "jdbc:h2:file:./data/cn.chahuyun.huyan-session-3/HuYan";
     private static final String SQLITE_BASE_PATH = "jdbc:sqlite:file:./data/cn.chahuyun.huyan-session-3/HuYan.sqlite";
     private static final String MYSQL_BASE_PATH = "jdbc:mysql://";
-    private static final PluginConfig config = HuYanSession.config;
+    private static final SessionPluginConfig config = HuYanSession.config;
 
-    private static final DataConfig dataConfig = DataConfig.INSTANCE;
+    private static final SessionDataConfig dataConfig = SessionDataConfig.INSTANCE;
 
     /**
      * 加载数据库

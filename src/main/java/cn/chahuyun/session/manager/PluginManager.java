@@ -1,7 +1,7 @@
 package cn.chahuyun.session.manager;
 
 import cn.chahuyun.authorize.HuYanAuthorize;
-import cn.chahuyun.session.config.PluginConfig;
+import cn.chahuyun.session.config.SessionPluginConfig;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -19,7 +19,7 @@ public class PluginManager {
      */
     public boolean authorizeAccess = false;
 
-    private PluginConfig config;
+    private SessionPluginConfig config;
 
     private PluginManager() {
 
@@ -28,7 +28,7 @@ public class PluginManager {
     /**
      * 配置加载
      */
-    public void configLoad(PluginConfig config) {
+    public void configLoad(SessionPluginConfig config) {
         this.config = config;
     }
 
