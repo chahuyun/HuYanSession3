@@ -15,6 +15,10 @@ repositories {
 }
 
 dependencies {
+
+    //sqlite的方言支持
+    api("org.hibernate.orm:hibernate-community-dialects:6.3.0.Final")
+
     compileOnly ("xyz.cssxsh.mirai:mirai-hibernate-plugin:2.7.1")
     compileOnly("cn.chahuyun:HuYanAuthorize:1.0.7")
 
@@ -23,6 +27,8 @@ dependencies {
 
     implementation ("cn.hutool:hutool-all:5.8.24")
     testImplementation ("xyz.cssxsh.mirai:mirai-hibernate-plugin:2.7.1")
+
+
 }
 
 mirai {

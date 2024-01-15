@@ -75,7 +75,7 @@ public class DataManager {
     private static Properties sqliteBase(MiraiHibernateConfiguration configuration) {
         Properties properties = new Properties();
         properties.setProperty("hibernate.connection.url", SQLITE_BASE_PATH);
-//        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLiteDialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
         properties.setProperty("hibernate.connection.driver_class", HIBERNATE_CONNECTION_DRIVER_CLASS_SQLITE);
         properties.setProperty("hibernate.connection.provider_class", "org.hibernate.hikaricp.internal.HikariCPConnectionProvider");
         properties.setProperty("hibernate.connection.isolation", "1");
