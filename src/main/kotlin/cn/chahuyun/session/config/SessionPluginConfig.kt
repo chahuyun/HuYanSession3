@@ -1,6 +1,7 @@
 package cn.chahuyun.session.config
 
 import cn.chahuyun.session.enums.DataType
+import cn.chahuyun.session.enums.CacheType
 import cn.chahuyun.session.enums.PermType
 import net.mamoe.mirai.console.data.AutoSavePluginConfig
 import net.mamoe.mirai.console.data.ValueDescription
@@ -22,6 +23,9 @@ object SessionPluginConfig : AutoSavePluginConfig("config") {
 
     @ValueDescription("权限前置")
     var permType:PermType by value(PermType.DEFAULT)
+
+    @ValueDescription("缓存位置")
+    var cacheType: CacheType by value(CacheType.MEMORY)
 }
 
 
