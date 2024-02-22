@@ -1,6 +1,6 @@
 package cn.chahuyun.session.data.factory;
 
-import cn.chahuyun.session.data.api.DataSpecification;
+import cn.chahuyun.api.data.api.DataSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.intellij.lang.annotations.Language;

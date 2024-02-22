@@ -10,8 +10,8 @@ group = "cn.chahuyun"
 version = "0.0.1"
 
 repositories {
-    maven("https://maven.aliyun.com/repository/public")
     mavenCentral()
+    maven("https://maven.aliyun.com/repository/public")
 }
 
 dependencies {
@@ -21,6 +21,8 @@ dependencies {
 
     compileOnly ("xyz.cssxsh.mirai:mirai-hibernate-plugin:2.7.1")
     compileOnly("cn.chahuyun:HuYanAuthorize:1.0.7")
+
+    implementation("cn.chahuyun.api:huyan-public-api:0.0.1")
 
     implementation("org.projectlombok:lombok:1.18.26")
     annotationProcessor("org.projectlombok:lombok:1.18.26")
