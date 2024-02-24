@@ -1,9 +1,12 @@
 package cn.chahuyun.session.data.cache;
 
-import cn.chahuyun.session.data.entity.GroupList;
+import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.entity.ManySession;
+import cn.chahuyun.session.data.entity.Permission;
 import cn.chahuyun.session.data.entity.SingleSession;
 import cn.chahuyun.session.data.entity.TimingSession;
+
+import java.util.Map;
 
 /**
  * 内存中缓存
@@ -13,13 +16,20 @@ import cn.chahuyun.session.data.entity.TimingSession;
  * @author Moyuyanli
  */
 public class MemoryCache implements Cache {
+
+    public static Map<Scope, SingleSession> singleSessionMap;
+    public static Map<Scope, ManySession> manySessionMap;
+    public static Map<Scope, TimingSession> timingSessionMap;
+    public static Map<Scope, Permission> permissionMap;
+
+
     /**
      * 缓存单一消息
      *
      * @param session 单一消息
      */
     @Override
-    public void CacheSession(SingleSession session) {
+    public void putSession(SingleSession session) {
 
     }
 
@@ -29,7 +39,7 @@ public class MemoryCache implements Cache {
      * @param session 多词条消息
      */
     @Override
-    public void CacheSession(ManySession session) {
+    public void putSession(ManySession session) {
 
     }
 
@@ -39,17 +49,101 @@ public class MemoryCache implements Cache {
      * @param session 定时消息
      */
     @Override
-    public void CacheSession(TimingSession session) {
+    public void putSession(TimingSession session) {
 
     }
 
     /**
-     * 缓存劝阻信息
+     * 缓存权限信息
      *
-     * @param groupList 群组信息
+     * @param permission 权限信息
      */
     @Override
-    public void CacheGroupList(GroupList groupList) {
+    public void putPermission(Permission permission) {
+
+    }
+
+    /**
+     * 获取单一消息
+     *
+     * @param id 消息id
+     * @return 单一消息
+     */
+    @Override
+    public SingleSession getSingSession(Integer id) {
+        return null;
+    }
+
+    /**
+     * 获取多词条消息
+     *
+     * @param id 消息id
+     * @return 多词条消息
+     */
+    @Override
+    public ManySession getManySession(Integer id) {
+        return null;
+    }
+
+    /**
+     * 获取定时消息
+     *
+     * @param id 消息id
+     * @return 定时消息
+     */
+    @Override
+    public TimingSession getTimingSession(Integer id) {
+        return null;
+    }
+
+    /**
+     * 获取权限信息
+     *
+     * @param id 权限信息id
+     * @return 权限信息
+     */
+    @Override
+    public Permission getPermissions(Integer id) {
+        return null;
+    }
+
+    /**
+     * 删除单一消息
+     *
+     * @param id 消息id
+     */
+    @Override
+    public void removeSingSession(Integer id) {
+
+    }
+
+    /**
+     * 删除多词条消息
+     *
+     * @param id 消息id
+     */
+    @Override
+    public void removeManySession(Integer id) {
+
+    }
+
+    /**
+     * 删除定时消息
+     *
+     * @param id 消息id
+     */
+    @Override
+    public void removeTimingSession(Integer id) {
+
+    }
+
+    /**
+     * 删除权限信息
+     *
+     * @param id 权限信息
+     */
+    @Override
+    public void removePermissions(Integer id) {
 
     }
 }
