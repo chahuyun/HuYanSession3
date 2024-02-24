@@ -1,5 +1,6 @@
 package cn.chahuyun.session;
 
+import cn.chahuyun.session.config.SessionAnswerConfig;
 import cn.chahuyun.session.config.SessionDataConfig;
 import cn.chahuyun.session.config.SessionPluginConfig;
 import cn.chahuyun.session.data.entity.SingleSession;
@@ -49,12 +50,16 @@ public final class HuYanSession extends JavaPlugin {
         log.info("加载配置文件...");
         reloadPluginConfig(config);
         reloadPluginConfig(SessionDataConfig.INSTANCE);
+        reloadPluginConfig(SessionAnswerConfig.INSTANCE);
         PluginManager.INSTANCE.configLoad(config);
 
         log.info("加载数据库...");
         DataManager.init(this);
 
-        List<SingleSession> singleSession = DataFactory.INSTANCE.selectListEntity(SingleSession.class, "from SingleSession where trigger = '%s'",123);
+        log.info("加载插件配置...");
+        PluginManager.INSTANCE.pluginLoad();
+
+        List<SingleSession> singleSession = DataFactory.getInstance().getDataService().selectListEntity(SingleSession.class, "from SingleSession where trigger = '%s'", 123);
         for (SingleSession singleMessage : singleSession) {
             log.info("singleMessage->" + singleMessage);
         }
