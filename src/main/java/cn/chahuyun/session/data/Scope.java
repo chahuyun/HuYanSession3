@@ -46,7 +46,7 @@ public class Scope {
                 group.add(Long.parseLong(split[0]));
                 break;
             case 2:
-                GroupList groupList = DataFactory.INSTANCE.selectResultEntity(GroupList.class,
+                GroupList groupList = DataFactory.getInstance().getDataService().selectResultEntity(GroupList.class,
                         "from GroupList where name = '%s' ", split[1]);
                 if (groupList == null) {
                     log.warn("群组查询为空，请检查你的群组是否正确！");

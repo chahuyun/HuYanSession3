@@ -11,6 +11,4 @@ import cn.chahuyun.session.data.BaseEntity;
 public class ManySession extends BaseEntity {
 
 
-
-
 }

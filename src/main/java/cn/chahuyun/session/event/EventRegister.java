@@ -18,6 +18,7 @@ public class EventRegister {
 
     /**
      * 加载全局事件注册器，指定父作用域，指定异常处理器
+     *
      * @param plugin 插件本身
      */
     public static void init(HuYanSession plugin) {
@@ -25,12 +26,6 @@ public class EventRegister {
                 .parentScope(plugin)
                 .exceptionHandler(new ExceptionHandle());
     }
-
-
-
-
-
-
 
 
 }
