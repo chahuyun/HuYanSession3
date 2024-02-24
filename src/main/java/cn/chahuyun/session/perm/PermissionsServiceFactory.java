@@ -1,6 +1,7 @@
 package cn.chahuyun.session.perm;
 
 import cn.chahuyun.api.permission.api.HuYanPermissionService;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 权限工厂
@@ -8,6 +9,7 @@ import cn.chahuyun.api.permission.api.HuYanPermissionService;
  * @author Moyuyanli
  * @Date 2024/2/22 22:10
  */
+@Slf4j
 public class PermissionsServiceFactory {
 
     private final HuYanPermissionService permissionService;
@@ -22,7 +24,11 @@ public class PermissionsServiceFactory {
      * 初始化权限工厂
      */
     public static void init(HuYanPermissionService permissionService) {
+        if (permissionService == null) {
+            throw new RuntimeException("权限工厂初始化失败:权限服务为空!");
+        }
         instance = new PermissionsServiceFactory(permissionService);
+        log.debug("权限服务初始化完成!");
     }
 
     /**
@@ -31,6 +37,9 @@ public class PermissionsServiceFactory {
      * @return 权限工厂
      */
     public static PermissionsServiceFactory getInstance() {
+        if (instance == null) {
+            throw new RuntimeException("权限工厂获取失败:未初始化权限工厂!");
+        }
         return instance;
     }
 

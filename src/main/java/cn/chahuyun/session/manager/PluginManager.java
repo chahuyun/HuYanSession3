@@ -2,6 +2,9 @@ package cn.chahuyun.session.manager;
 
 import cn.chahuyun.api.permission.api.HuYanPermissionService;
 import cn.chahuyun.session.config.SessionPluginConfig;
+import cn.chahuyun.session.data.cache.Cache;
+import cn.chahuyun.session.data.cache.CacheFactory;
+import cn.chahuyun.session.data.cache.MemoryCache;
 import cn.chahuyun.session.perm.DefaultPermissions;
 import cn.chahuyun.session.perm.PermissionsServiceFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +63,20 @@ public class PluginManager {
                 break;
         }
         PermissionsServiceFactory.init(permissionService);
-        log.debug("权限服务初始化完成!");
+
+
+
+        //加载缓存服务
+        Cache cache;
+        switch (config.getCacheType()) {
+            case REDIS:
+                log.warn("暂不支持redis缓存，将使用默认内存缓存");
+            case MEMORY:
+            default:
+                cache = new MemoryCache();
+        }
+        CacheFactory.init(cache);
+
 
     }
 
