@@ -5,5 +5,6 @@ package cn.chahuyun.session.enums
  */
 enum class PermType {
     DEFAULT,
+    INTERIOR,
     AUTHORIZE
 }
