@@ -84,27 +84,22 @@ public class Scope {
      * 作用域类型
      */
     private final Type type;
-
     /**
      * 单一群
      */
     private final Long group;
-
     /**
      * 分组群
      */
     private final List<Long> groups;
-
     /**
      * 单一用户
      */
     private final Long user;
-
     /**
      * 分组用户
      */
     private final List<Long> users;
-
     /**
      * 群员
      */
