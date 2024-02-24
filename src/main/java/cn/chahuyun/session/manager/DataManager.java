@@ -65,6 +65,7 @@ public class DataManager {
             log.error("数据库初始化错误!", e);
         }
         DataFactory.dataFactoryLoad(sessionFactory);
+
     }
 
     /**

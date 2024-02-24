@@ -27,6 +27,7 @@ public class DataFactory {
      */
     public static void dataFactoryLoad(SessionFactory sessionFactory) {
         instance = new DataFactory(sessionFactory);
+        log.debug("数据库服务初始化完成!");
     }
 
     /**
