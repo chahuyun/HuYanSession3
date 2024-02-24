@@ -17,4 +17,11 @@ public interface ScopeAcquisition {
      */
     Scope getScope();
 
+    /**
+     * 设置作用域，将他的mark保存
+     *
+     * @param scope 作用域
+     */
+    void setScope(Scope scope);
+
 }

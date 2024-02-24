@@ -13,6 +13,9 @@ import jakarta.persistence.MappedSuperclass;
 @MappedSuperclass
 public class BaseEntity implements ScopeAcquisition {
 
+    /**
+     * 作用域标识
+     */
     @Column(name = "scope_marker")
     private String scopeMarker;
 
@@ -23,7 +26,17 @@ public class BaseEntity implements ScopeAcquisition {
      */
     @Override
     public Scope getScope() {
-        return new Scope(scopeMarker);
+        return Scope.fromScopeMarker(scopeMarker);
+    }
+
+    /**
+     * 设置作用域，将他的mark保存
+     *
+     * @param scope 作用域
+     */
+    @Override
+    public void setScope(Scope scope) {
+        this.scopeMarker = scope.getMarker();
     }
 
     public String getScopeMarker() {
