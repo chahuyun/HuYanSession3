@@ -1,7 +1,6 @@
 package cn.chahuyun.session.perm;
 
 import cn.chahuyun.api.permission.api.HuYanPermissionService;
-import cn.chahuyun.session.manager.PluginManager;
 
 /**
  * 权限工厂
@@ -20,12 +19,19 @@ public class PermissionsServiceFactory {
     }
 
     /**
-     * 获取权限工厂实例
+     * 初始化权限工厂
+     */
+    public static void init(HuYanPermissionService permissionService) {
+        instance = new PermissionsServiceFactory(permissionService);
+    }
+
+    /**
+     * 获取唯一权限工厂实例
      *
      * @return 权限工厂
      */
     public static PermissionsServiceFactory getInstance() {
-        return instance != null ? instance : new PermissionsServiceFactory(PluginManager.INSTANCE.getPermissionService());
+        return instance;
     }
 
     /**

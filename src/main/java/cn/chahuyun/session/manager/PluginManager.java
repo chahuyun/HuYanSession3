@@ -3,6 +3,7 @@ package cn.chahuyun.session.manager;
 import cn.chahuyun.api.permission.api.HuYanPermissionService;
 import cn.chahuyun.session.config.SessionPluginConfig;
 import cn.chahuyun.session.perm.DefaultPermissions;
+import cn.chahuyun.session.perm.PermissionsServiceFactory;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.console.MiraiConsole;
 
@@ -22,10 +23,7 @@ public class PluginManager {
 
     private SessionPluginConfig config;
 
-    private HuYanPermissionService permissionService;
-
     private PluginManager() {
-
     }
 
     /**
@@ -40,16 +38,17 @@ public class PluginManager {
      */
     public void pluginLoad() {
 
-
         //加载权限
+        HuYanPermissionService permissionService;
         Optional<HuYanPermissionService> first = ServiceLoader.load(HuYanPermissionService.class).findFirst();
         switch (config.getPermType()) {
             case AUTHORIZE:
                 if (first.isPresent()) {
                     permissionService = first.get();
                 } else {
-                    log.error("HuYanAuthor does not exist! Please check and restart after mcl!");
+                    log.error("HuYanAuthorize does not exist! Please check and restart after mcl!");
                     MiraiConsole.shutdown();
+                    return;
                 }
                 break;
             case INTERIOR:
@@ -60,11 +59,10 @@ public class PluginManager {
                 permissionService = first.orElseGet(DefaultPermissions::new);
                 break;
         }
+        PermissionsServiceFactory.init(permissionService);
+        log.debug("权限服务初始化完成!");
 
     }
 
 
-    public HuYanPermissionService getPermissionService() {
-        return permissionService;
-    }
 }
