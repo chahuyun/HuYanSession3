@@ -1,5 +1,9 @@
 package cn.chahuyun.session.data.cache;
 
+import cn.chahuyun.session.data.entity.ManySession;
+import cn.chahuyun.session.data.entity.SingleSession;
+import cn.chahuyun.session.data.entity.TimingSession;
+
 import java.util.Map;
 
 /**
@@ -10,7 +14,10 @@ import java.util.Map;
  */
 public class DataCache {
 
-    public static Map<Long,Object>
+    public static Map<Long, SingleSession> singleSessionMap;
+    public static Map<Long, ManySession> manySessionMap;
+    public static Map<Long, TimingSession> timingSessionMap;
+
 
 
 }
