@@ -1,5 +1,6 @@
 package cn.chahuyun.session.config
 
+import cn.chahuyun.session.data.Scope
 import net.mamoe.mirai.console.data.AutoSavePluginConfig
 import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.value
@@ -15,5 +16,15 @@ object SessionDataConfig : AutoSavePluginConfig("dataConfig") {
     @ValueDescription("mysql数据库密码")
     val password:String by value("123456")
 
+
+    val scopeSort :  List<Scope.Type> by value(arrayListOf<Scope.Type>().apply {
+        add(Scope.Type.USERS)
+        add(Scope.Type.LIST)
+        add(Scope.Type.GROUP_MEMBERS)
+        add(Scope.Type.GROUP_MEMBER)
+        add(Scope.Type.GROUP)
+        add(Scope.Type.GLOBAL_USER)
+        add(Scope.Type.GLOBAL)
+    })
 
 }
