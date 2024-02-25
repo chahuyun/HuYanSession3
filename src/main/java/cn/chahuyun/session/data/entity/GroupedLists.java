@@ -1,7 +1,11 @@
 package cn.chahuyun.session.data.entity;
 
+import cn.chahuyun.session.data.BaseEntity;
 import cn.hutool.core.util.ArrayUtil;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +18,8 @@ import java.util.List;
  */
 @Entity
 @Table(name = "grouped_lists")
-public class GroupedLists {
+public class GroupedLists extends BaseEntity {
 
-    /**
-     * id
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
     /**
      * 分组类型
@@ -65,14 +63,6 @@ public class GroupedLists {
         this.type = type;
         this.name = name;
         this.setValueList(valueList);
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public Integer getType() {

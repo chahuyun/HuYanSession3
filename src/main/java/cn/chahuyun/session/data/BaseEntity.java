@@ -1,8 +1,7 @@
 package cn.chahuyun.session.data;
 
 import cn.chahuyun.session.data.api.ScopeAcquisition;
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 /**
  * 基础类
@@ -12,6 +11,11 @@ import jakarta.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public class BaseEntity implements ScopeAcquisition {
+
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     /**
      * 作用域标识
@@ -37,6 +41,14 @@ public class BaseEntity implements ScopeAcquisition {
     @Override
     public void setScope(Scope scope) {
         this.scopeMarker = scope.getMarker();
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getScopeMarker() {

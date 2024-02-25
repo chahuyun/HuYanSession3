@@ -7,6 +7,7 @@ import cn.chahuyun.session.data.factory.DataFactory;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 作用域
@@ -331,6 +332,19 @@ public class Scope {
         this.membersName = null;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Scope scope = (Scope) o;
+        return Objects.equals(marker, scope.marker) && type == scope.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(marker, type);
+    }
 
     public String getMarker() {
         return marker;

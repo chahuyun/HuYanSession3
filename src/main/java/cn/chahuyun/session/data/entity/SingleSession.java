@@ -2,7 +2,9 @@ package cn.chahuyun.session.data.entity;
 
 import cn.chahuyun.session.data.BaseEntity;
 import cn.chahuyun.session.enums.SessionType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 /**
  * 会话信息
@@ -14,9 +16,6 @@ import jakarta.persistence.*;
 @Table(name = "session_single")
 public class SingleSession extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
 
     @Column(name = "`trigger`")
     private String trigger;
@@ -35,14 +34,6 @@ public class SingleSession extends BaseEntity {
         this.reply = reply;
         this.dynamic = dynamic;
         this.type = type;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getTrigger() {
@@ -101,7 +92,7 @@ public class SingleSession extends BaseEntity {
     @Override
     public String toString() {
         return "SingleSession{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", trigger='" + trigger + '\'' +
                 ", reply='" + reply + '\'' +
                 ", dynamic='" + dynamic + '\'' +
