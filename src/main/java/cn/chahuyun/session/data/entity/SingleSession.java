@@ -111,7 +111,7 @@ public class SingleSession extends BaseEntity {
         if (probability != null) {
             this.probability = Math.min(Math.max(probability, 0.0), 1.0);
         } else {
-            this.probability = null;
+            this.probability = 1.0;
         }
     }
 
