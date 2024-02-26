@@ -78,15 +78,16 @@ public interface Cache {
 
     /**
      * 获取单一消息<br>
-     * 需要按照一下顺序排序后的结果:<br>
-     * <ui></ui>
+     * 需要按照设置中的顺序进行排序
+     *
      * @param scope 作用域
      * @return 单一消息集合
      */
     List<SingleSession> getSingSession(Scope scope);
 
     /**
-     * 获取多词条消息
+     * 获取多词条消息<br>
+     * 需要按照设置中的顺序进行排序
      *
      * @param scope 作用域
      * @return 多词条消息集合
@@ -94,7 +95,8 @@ public interface Cache {
     List<ManySession> getManySession(Scope scope);
 
     /**
-     * 获取定时消息
+     * 获取定时消息<br>
+     * 需要按照设置中的顺序进行排序
      *
      * @param scope 作用域
      * @return 定时消息集合
@@ -102,7 +104,8 @@ public interface Cache {
     List<TimingSession> getTimingSession(Scope scope);
 
     /**
-     * 获取权限信息
+     * 获取权限信息<br>
+     * 需要按照设置中的顺序进行排序
      *
      * @param scope 作用域
      * @return 权限信息集合
@@ -138,14 +141,28 @@ public interface Cache {
     void removePermissions(Integer id);
 
     /**
-     * 获取所有作用域
+     * 获取用于消息匹配的作用域<br>
+     * 需要按照设置中的顺序进行排序
      *
      * @return List<Scope> 作用域集合
      */
-    List<Scope> getAllScope();
+    List<Scope> getMateSessionScope();
 
+    /**
+     * 获取用于定时消息的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    List<Scope> getMateTimingScope();
 
-
+    /**
+     * 获取用于权限信息的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    List<Scope> getMatePermScope();
 
 
 }

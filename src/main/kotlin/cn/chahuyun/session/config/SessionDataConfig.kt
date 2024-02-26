@@ -16,7 +16,7 @@ object SessionDataConfig : AutoSavePluginConfig("dataConfig") {
     @ValueDescription("mysql数据库密码")
     val password:String by value("123456")
 
-
+    @ValueDescription("数据查询排序(也可以理解为匹配优先级)")
     val scopeSort :  List<Scope.Type> by value(arrayListOf<Scope.Type>().apply {
         add(Scope.Type.USERS)
         add(Scope.Type.LIST)

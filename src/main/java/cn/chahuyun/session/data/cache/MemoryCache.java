@@ -1,15 +1,13 @@
 package cn.chahuyun.session.data.cache;
 
+import cn.chahuyun.session.config.SessionDataConfig;
 import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.entity.ManySession;
 import cn.chahuyun.session.data.entity.Permission;
 import cn.chahuyun.session.data.entity.SingleSession;
 import cn.chahuyun.session.data.entity.TimingSession;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 内存中缓存
@@ -170,6 +168,50 @@ public class MemoryCache implements Cache {
     }
 
     /**
+     * 获取单一消息
+     *
+     * @param scope 作用域
+     * @return 单一消息集合
+     */
+    @Override
+    public List<SingleSession> getSingSession(Scope scope) {
+        return singleSessionMap.get(scope);
+    }
+
+    /**
+     * 获取多词条消息
+     *
+     * @param scope 作用域
+     * @return 多词条消息集合
+     */
+    @Override
+    public List<ManySession> getManySession(Scope scope) {
+        return manySessionMap.get(scope);
+    }
+
+    /**
+     * 获取定时消息
+     *
+     * @param scope 作用域
+     * @return 定时消息集合
+     */
+    @Override
+    public List<TimingSession> getTimingSession(Scope scope) {
+        return timingSessionMap.get(scope);
+    }
+
+    /**
+     * 获取权限信息
+     *
+     * @param scope 作用域
+     * @return 权限信息集合
+     */
+    @Override
+    public List<Permission> getPermissions(Scope scope) {
+        return permissionMap.get(scope);
+    }
+
+    /**
      * 删除单一消息
      *
      * @param id 消息id
@@ -231,5 +273,75 @@ public class MemoryCache implements Cache {
                 permissionMap.get(permission.getScope()).remove(permission);
             }
         }
+    }
+
+    /**
+     * 获取用于消息匹配的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    @Override
+    public List<Scope> getMateSessionScope() {
+        HashSet<Scope> scopes = new HashSet<>();
+        scopes.addAll(singleSessionMap.keySet());
+        scopes.addAll(manySessionMap.keySet());
+        return scopeSort(scopes);
+    }
+
+    /**
+     * 获取用于定时消息的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    @Override
+    public List<Scope> getMateTimingScope() {
+        HashSet<Scope> scopes = new HashSet<>(timingSessionMap.keySet());
+        return scopeSort(scopes);
+    }
+
+    /**
+     * 获取用于权限信息的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    @Override
+    public List<Scope> getMatePermScope() {
+        HashSet<Scope> scopes = new HashSet<>(permissionMap.keySet());
+        return scopeSort(scopes);
+    }
+
+
+    /**
+     * 对作用域进行设置好的顺序进行排序
+     *
+     * @param scopes set scope
+     * @return 排序后的List
+     */
+    private List<Scope> scopeSort(HashSet<Scope> scopes) {
+        // 将HashSet转为List以支持排序操作
+        List<Scope> sortedScopes = new ArrayList<>(scopes);
+
+
+        SessionDataConfig dataConfig = SessionDataConfig.INSTANCE;
+        // 定义Comparator用于比较Scope的Type在scopeSort列表中的位置
+        Comparator<Scope> scopeComparator = (s1, s2) -> {
+            int index1 = dataConfig.getScopeSort().indexOf(s1.getType());
+            int index2 = dataConfig.getScopeSort().indexOf(s2.getType());
+
+            // 如果两者都在范围内，则按索引值排序，否则保持原有顺序
+            if (index1 != -1 && index2 != -1) {
+                return Integer.compare(index1, index2);
+            } else {
+                return Integer.compare(index1 == -1 ? Integer.MAX_VALUE : index1,
+                        index2 == -1 ? Integer.MAX_VALUE : index2);
+            }
+        };
+
+        // 对sortedScopes进行排序
+        sortedScopes.sort(scopeComparator);
+        return sortedScopes;
     }
 }
