@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Moyuyanli
  */
-@Slf4j
+@Slf4j(topic = "HuYanSession3")
 public class CacheFactory {
 
     private static CacheFactory instance;

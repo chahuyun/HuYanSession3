@@ -19,7 +19,7 @@ import java.util.Properties;
  * @author Moyuyanli
  * @date 2024/1/3 10:15
  */
-@Slf4j
+@Slf4j(topic = "HuYanSession3")
 public class DataManager {
 
     /**

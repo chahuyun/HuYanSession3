@@ -13,7 +13,7 @@ import java.util.List;
  * @author Moyuyanli
  * @Date 2024/2/24 13:16
  */
-@Slf4j
+@Slf4j(topic = "HuYanSession3")
 public class DefaultDataService extends AbstractDataService {
 
     protected DefaultDataService(SessionFactory sessionFactory) {

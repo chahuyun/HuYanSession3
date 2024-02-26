@@ -14,9 +14,7 @@ public abstract class AbstractDataService implements DataSpecification {
     protected final SessionFactory sessionFactory;
 
     protected AbstractDataService(SessionFactory sessionFactory) {
-
         this.sessionFactory = sessionFactory;
-
     }
 
 }

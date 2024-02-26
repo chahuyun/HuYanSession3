@@ -14,7 +14,7 @@ import net.mamoe.mirai.event.GlobalEventChannel;
  * @author Moyuyanli
  * @date 2024/1/15 11:07
  */
-@Slf4j
+@Slf4j(topic = "HuYanSession3")
 public class EventRegister {
 
     static EventChannel<Event> globalEvent;
@@ -38,7 +38,6 @@ public class EventRegister {
             globalEvent.registerListenerHost(new EventServices());
         }
     }
-
 
 
 }

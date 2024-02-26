@@ -7,10 +7,22 @@ package cn.chahuyun.session.enums;
  * @date 2024/1/8 15:26
  */
 public enum SessionType {
-
+    /**
+     * 纯文本消息
+     */
     TEXT(1, "纯文本"),
+    /**
+     * 图片消息
+     */
     IMAGE(2, "图片消息"),
+    /**
+     * 其他类型消息<br>
+     * 如:转发消息  音频消息
+     */
     OTHER(3, "其他类型"),
+    /**
+     * 图片文本消息
+     */
     MIXING(4, "图片文本消息");
 
     private Integer typeValue;

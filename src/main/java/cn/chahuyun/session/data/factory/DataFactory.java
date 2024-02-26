@@ -9,7 +9,7 @@ import org.hibernate.SessionFactory;
  * @author Moyuyanli
  * @date 2024/1/3 13:17
  */
-@Slf4j
+@Slf4j(topic = "HuYanSession3")
 public class DataFactory {
 
     private static DataFactory instance;

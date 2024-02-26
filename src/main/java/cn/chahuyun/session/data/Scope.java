@@ -15,7 +15,7 @@ import java.util.Objects;
  * @author Moyuyanli
  * @date 2024/1/3 15:40
  */
-@Slf4j
+@Slf4j(topic = "HuYanSession3")
 public class Scope {
 
     /*

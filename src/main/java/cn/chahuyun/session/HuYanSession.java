@@ -5,6 +5,7 @@ import cn.chahuyun.session.config.SessionDataConfig;
 import cn.chahuyun.session.config.SessionPluginConfig;
 import cn.chahuyun.session.data.entity.SingleSession;
 import cn.chahuyun.session.data.factory.DataFactory;
+import cn.chahuyun.session.event.EventRegister;
 import cn.chahuyun.session.manager.DataManager;
 import cn.chahuyun.session.manager.PluginManager;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@Slf4j
+@Slf4j(topic = "HuYanSession3")
 public final class HuYanSession extends JavaPlugin {
 
     public static final HuYanSession INSTANCE = new HuYanSession();
@@ -31,7 +32,7 @@ public final class HuYanSession extends JavaPlugin {
 
     private HuYanSession() {
         super(new JvmPluginDescriptionBuilder("cn.chahuyun.huyan-session-3", VERSION)
-                .name("HuYanSession")
+                .name("HuYanSession3")
                 .dependsOn("xyz.cssxsh.mirai.plugin.mirai-hibernate-plugin", false)
                 .dependsOn("cn.chahuyun.HuYanAuthorize", true)
                 .info("屎山3")
@@ -59,11 +60,14 @@ public final class HuYanSession extends JavaPlugin {
         log.info("加载插件配置...");
         PluginManager.INSTANCE.pluginLoad();
 
+        log.info("注册事件");
+        EventRegister.init(this);
+
         List<SingleSession> singleSession = DataFactory.getInstance().getDataService().selectListEntity(SingleSession.class, "from SingleSession where trigger = '%s'", 123);
         for (SingleSession singleMessage : singleSession) {
             log.info("singleMessage->" + singleMessage);
         }
 
-        getLogger().info("Plugin loaded!");
+        getLogger().info("HuYanSession3 加载完成!");
     }
 }

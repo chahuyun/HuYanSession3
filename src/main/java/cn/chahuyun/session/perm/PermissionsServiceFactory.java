@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Moyuyanli
  * @Date 2024/2/22 22:10
  */
-@Slf4j
+@Slf4j(topic = "HuYanSession3")
 public class PermissionsServiceFactory {
 
     private final HuYanPermissionService permissionService;
