@@ -19,7 +19,7 @@ import java.util.ServiceLoader;
  * @author Moyuyanli
  * @date 2023/12/29 10:30
  */
-@Slf4j
+@Slf4j(topic = "HuYanSession3")
 public class PluginManager {
 
     public static PluginManager INSTANCE = new PluginManager();
@@ -73,7 +73,7 @@ public class PluginManager {
                 log.warn("暂不支持redis缓存，将使用默认内存缓存");
             case MEMORY:
             default:
-                cache = new MemoryCache();
+                cache = new MemoryCache().init();
         }
         CacheFactory.init(cache);
 
