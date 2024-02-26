@@ -16,24 +16,33 @@ import jakarta.persistence.Table;
 @Table(name = "session_single")
 public class SingleSession extends BaseEntity {
 
-
+    /**
+     * 触发词
+     */
     @Column(name = "`trigger`")
     private String trigger;
-
+    /**
+     * 回复词
+     */
     private String reply;
-
-    private String dynamic;
-
+    /**
+     * 是否为动态消息
+     */
+    private boolean dynamic;
+    /**
+     * 是否为本地缓存
+     */
+    private boolean local;
+    /**
+     * 概率触发
+     */
+    private Double probability;
+    /**
+     * 消息类型
+     */
     private SessionType type;
 
     public SingleSession() {
-    }
-
-    public SingleSession(String trigger, String reply, String dynamic, SessionType type) {
-        this.trigger = trigger;
-        this.reply = reply;
-        this.dynamic = dynamic;
-        this.type = type;
     }
 
     public String getTrigger() {
@@ -52,16 +61,28 @@ public class SingleSession extends BaseEntity {
         this.reply = reply;
     }
 
-    public String getDynamic() {
+    public boolean isDynamic() {
         return dynamic;
     }
 
-    public void setDynamic(String dynamic) {
+    public void setDynamic(boolean dynamic) {
         this.dynamic = dynamic;
     }
 
-    public Integer getType() {
-        return type.getTypeValue();
+    public boolean isLocal() {
+        return local;
+    }
+
+    public void setLocal(boolean local) {
+        this.local = local;
+    }
+
+    public SessionType getType() {
+        return type;
+    }
+
+    public void setType(SessionType type) {
+        this.type = type;
     }
 
     public void setType(Integer type) {
@@ -78,6 +99,19 @@ public class SingleSession extends BaseEntity {
             case 1:
             default:
                 this.type = SessionType.TEXT;
+        }
+    }
+
+
+    public Double getProbability() {
+        return probability;
+    }
+
+    public void setProbability(Double probability) {
+        if (probability != null) {
+            this.probability = Math.min(Math.max(probability, 0.0), 1.0);
+        } else {
+            this.probability = null;
         }
     }
 
