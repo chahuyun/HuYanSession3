@@ -1,9 +1,12 @@
 package cn.chahuyun.session.data.cache;
 
+import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.entity.ManySession;
 import cn.chahuyun.session.data.entity.Permission;
 import cn.chahuyun.session.data.entity.SingleSession;
 import cn.chahuyun.session.data.entity.TimingSession;
+
+import java.util.List;
 
 /**
  * redis中缓存
@@ -99,6 +102,54 @@ public class RedisCache implements Cache {
     }
 
     /**
+     * 获取单一消息<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @param scope 作用域
+     * @return 单一消息集合
+     */
+    @Override
+    public List<SingleSession> getSingSession(Scope scope) {
+        return null;
+    }
+
+    /**
+     * 获取多词条消息<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @param scope 作用域
+     * @return 多词条消息集合
+     */
+    @Override
+    public List<ManySession> getManySession(Scope scope) {
+        return null;
+    }
+
+    /**
+     * 获取定时消息<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @param scope 作用域
+     * @return 定时消息集合
+     */
+    @Override
+    public List<TimingSession> getTimingSession(Scope scope) {
+        return null;
+    }
+
+    /**
+     * 获取权限信息<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @param scope 作用域
+     * @return 权限信息集合
+     */
+    @Override
+    public List<Permission> getPermissions(Scope scope) {
+        return null;
+    }
+
+    /**
      * 删除单一消息
      *
      * @param id 消息id
@@ -136,5 +187,49 @@ public class RedisCache implements Cache {
     @Override
     public void removePermissions(Integer id) {
 
+    }
+
+    /**
+     * 获取用于单一消息匹配的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    @Override
+    public List<Scope> getMateSingSessionScope() {
+        return null;
+    }
+
+    /**
+     * 获取用于多词条消息匹配的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    @Override
+    public List<Scope> getMateManySessionScope() {
+        return null;
+    }
+
+    /**
+     * 获取用于定时消息的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    @Override
+    public List<Scope> getMateTimingScope() {
+        return null;
+    }
+
+    /**
+     * 获取用于权限信息的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    @Override
+    public List<Scope> getMatePermScope() {
+        return null;
     }
 }
