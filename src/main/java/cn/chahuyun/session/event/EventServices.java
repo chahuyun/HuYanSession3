@@ -1,11 +1,19 @@
 package cn.chahuyun.session.event;
 
+import cn.chahuyun.session.data.Scope;
+import cn.chahuyun.session.data.cache.Cache;
+import cn.chahuyun.session.data.cache.CacheFactory;
 import cn.chahuyun.session.event.api.EventHanding;
+import cn.chahuyun.session.utils.MatchingTool;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.User;
 import net.mamoe.mirai.event.EventHandler;
 import net.mamoe.mirai.event.SimpleListenerHost;
 import net.mamoe.mirai.event.events.MessageEvent;
+import net.mamoe.mirai.message.data.MessageChain;
+
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * 事件service
@@ -28,8 +36,13 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
         Contact subject = messageEvent.getSubject();
         User sender = messageEvent.getSender();
 
-
-
+        Cache cacheService = CacheFactory.getInstall().getCacheService();
+        List<Scope> mateSessionScope = cacheService.getMateSingSessionScope();
+        for (Scope scope : mateSessionScope) {
+            if (MatchingTool.matchScope(scope, subject, sender)) {
+                cacheService.getSingSession(scope);
+            }
+        }
     }
 
     /**
@@ -40,6 +53,19 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
     @Override
     @EventHandler
     public void commandMatching(MessageEvent messageEvent) {
+        Contact subject = messageEvent.getSubject();
+        User sender = messageEvent.getSender();
+        MessageChain message = messageEvent.getMessage();
+        String content = message.contentToString();
+
         //todo 匹配指令
+        String addStudyPattern = "壶言3消息测试";
+        if (Pattern.matches(addStudyPattern, content)) {
+            subject.sendMessage(MessageChain.serializeToJsonString(message));
+        }
+
+        if (sender.getId() == 572490972 && content.lastIndexOf("!") == 0) {
+            subject.sendMessage(MessageChain.serializeToJsonString(message));
+        }
     }
 }
