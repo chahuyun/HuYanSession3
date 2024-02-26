@@ -23,6 +23,13 @@ public class MemoryCache implements Cache {
     public static Map<Scope, List<TimingSession>> timingSessionMap;
     public static Map<Scope, List<Permission>> permissionMap;
 
+    public MemoryCache init() {
+        singleSessionMap = new HashMap<>();
+        manySessionMap = new HashMap<>();
+        timingSessionMap = new HashMap<>();
+        permissionMap = new HashMap<>();
+        return this;
+    }
 
     /**
      * 缓存单一消息
@@ -282,10 +289,26 @@ public class MemoryCache implements Cache {
      * @return List<Scope> 作用域集合
      */
     @Override
-    public List<Scope> getMateSessionScope() {
-        HashSet<Scope> scopes = new HashSet<>();
-        scopes.addAll(singleSessionMap.keySet());
-        scopes.addAll(manySessionMap.keySet());
+    public List<Scope> getMateSingSessionScope() {
+        if (singleSessionMap.isEmpty()) {
+            return new ArrayList<>();
+        }
+        HashSet<Scope> scopes = new HashSet<>(singleSessionMap.keySet());
+        return scopeSort(scopes);
+    }
+
+    /**
+     * 获取用于多词条消息匹配的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    @Override
+    public List<Scope> getMateManySessionScope() {
+        if (manySessionMap.isEmpty()) {
+            return new ArrayList<>();
+        }
+        HashSet<Scope> scopes = new HashSet<>(manySessionMap.keySet());
         return scopeSort(scopes);
     }
 
@@ -297,6 +320,9 @@ public class MemoryCache implements Cache {
      */
     @Override
     public List<Scope> getMateTimingScope() {
+        if (timingSessionMap.isEmpty()) {
+            return new ArrayList<>();
+        }
         HashSet<Scope> scopes = new HashSet<>(timingSessionMap.keySet());
         return scopeSort(scopes);
     }
@@ -309,6 +335,9 @@ public class MemoryCache implements Cache {
      */
     @Override
     public List<Scope> getMatePermScope() {
+        if (permissionMap.isEmpty()) {
+            return new ArrayList<>();
+        }
         HashSet<Scope> scopes = new HashSet<>(permissionMap.keySet());
         return scopeSort(scopes);
     }

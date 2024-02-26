@@ -141,12 +141,20 @@ public interface Cache {
     void removePermissions(Integer id);
 
     /**
-     * 获取用于消息匹配的作用域<br>
+     * 获取用于单一消息匹配的作用域<br>
      * 需要按照设置中的顺序进行排序
      *
      * @return List<Scope> 作用域集合
      */
-    List<Scope> getMateSessionScope();
+    List<Scope> getMateSingSessionScope();
+
+    /**
+     * 获取用于多词条消息匹配的作用域<br>
+     * 需要按照设置中的顺序进行排序
+     *
+     * @return List<Scope> 作用域集合
+     */
+    List<Scope> getMateManySessionScope();
 
     /**
      * 获取用于定时消息的作用域<br>
