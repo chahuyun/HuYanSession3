@@ -1,5 +1,7 @@
 package cn.chahuyun.session.send;
 
+import net.mamoe.mirai.message.data.Image;
+
 /**
  * 用于本地化缓存的消息
  *
@@ -8,13 +10,13 @@ package cn.chahuyun.session.send;
  */
 public class LocalMessage {
 
-    private String reply;
+    private final Image reply;
 
-    public LocalMessage(String reply) {
+    public LocalMessage(Image reply) {
         this.reply = reply;
     }
 
-    public String replace() {
+    public Image replace() {
         return reply;
     }
 }

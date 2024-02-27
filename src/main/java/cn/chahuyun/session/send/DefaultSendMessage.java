@@ -5,8 +5,9 @@ import cn.chahuyun.session.data.entity.SingleSession;
 import cn.chahuyun.session.data.entity.TimingSession;
 import cn.chahuyun.session.enums.SendType;
 import cn.chahuyun.session.send.api.SendMessage;
+import cn.hutool.core.util.RandomUtil;
 import net.mamoe.mirai.event.events.MessageEvent;
-import net.mamoe.mirai.message.data.MessageChain;
+import net.mamoe.mirai.message.data.*;
 
 /**
  * 发送消息
@@ -14,7 +15,7 @@ import net.mamoe.mirai.message.data.MessageChain;
  * @author Moyuyanli
  * @date 2024/2/26 11:24
  */
-public class DefaultSendMessage  implements SendMessage {
+public class DefaultSendMessage implements SendMessage {
 
     private SingleSession singleSession;
 
@@ -51,22 +52,54 @@ public class DefaultSendMessage  implements SendMessage {
     @Override
     public void send() {
         switch (sendType) {
-            case SING:sendSingMessage();break;
-            case MANY:sendManyMessage();break;
-            case TIMING:sendTimingMessage();break;
+            case SING:
+                sendSingMessage();
+                break;
+            case MANY:
+                sendManyMessage();
+                break;
+            case TIMING:
+                sendTimingMessage();
+                break;
         }
     }
 
-
+    /**
+     * 发送单一消息
+     */
     private void sendSingMessage() {
         String reply = singleSession.getReply();
         MessageChain replyMessageChain = MessageChain.deserializeFromJsonString(reply);
         if (singleSession.isDynamic()) {
-            reply = new DynamicMessages(reply, messageEvent).replace();
+            MessageChainBuilder chainBuilder = new MessageChainBuilder();
+            for (SingleMessage singleMessage : replyMessageChain) {
+                PlainText plainText = singleMessage instanceof PlainText ? ((PlainText) singleMessage) : null;
+                if (plainText == null) {
+                    chainBuilder.append(singleMessage);
+                    continue;
+                }
+                String replace = new DynamicMessages(plainText.getContent(), messageEvent).replace();
+                chainBuilder.append(replace);
+            }
+            replyMessageChain = chainBuilder.build();
         }
         if (singleSession.isLocal()) {
+            MessageChainBuilder chainBuilder = new MessageChainBuilder();
+            for (SingleMessage singleMessage : replyMessageChain) {
+                Image image = singleMessage instanceof Image ? ((Image) singleMessage) : null;
+                if (image == null) {
+                    chainBuilder.append(singleMessage);
+                    continue;
+                }
+                chainBuilder.append(new LocalMessage(image).replace());
+            }
+            replyMessageChain = chainBuilder.build();
         }
-        messageEvent.getSubject().sendMessage(reply);
+
+        if (singleSession.getProbability() == 1.0 ||
+                RandomUtil.randomInt(1, 100) <= singleSession.getProbability() * 100) {
+            messageEvent.getSubject().sendMessage(replyMessageChain);
+        }
     }
 
     public void sendManyMessage() {
