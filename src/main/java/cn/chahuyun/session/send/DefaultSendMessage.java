@@ -102,11 +102,11 @@ public class DefaultSendMessage implements SendMessage {
         }
     }
 
-    public void sendManyMessage() {
+    private void sendManyMessage() {
 
     }
 
-    public void sendTimingMessage() {
+    private void sendTimingMessage() {
 
     }
 

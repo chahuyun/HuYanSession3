@@ -40,7 +40,7 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
         List<Scope> mateSessionScope = cacheService.getMateSingSessionScope();
         for (Scope scope : mateSessionScope) {
             if (MatchingTool.matchScope(scope, subject, sender)) {
-                cacheService.getSingSession(scope);
+
             }
         }
     }
