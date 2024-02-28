@@ -289,7 +289,7 @@ public class MemoryCache implements Cache {
      * @return List<Scope> 作用域集合
      */
     @Override
-    public List<Scope> getMateSingSessionScope() {
+    public List<Scope> getMatchSingSessionScope() {
         if (singleSessionMap.isEmpty()) {
             return new ArrayList<>();
         }
@@ -304,7 +304,7 @@ public class MemoryCache implements Cache {
      * @return List<Scope> 作用域集合
      */
     @Override
-    public List<Scope> getMateManySessionScope() {
+    public List<Scope> getMatchManySessionScope() {
         if (manySessionMap.isEmpty()) {
             return new ArrayList<>();
         }
@@ -319,7 +319,7 @@ public class MemoryCache implements Cache {
      * @return List<Scope> 作用域集合
      */
     @Override
-    public List<Scope> getMateTimingScope() {
+    public List<Scope> getMatchTimingScope() {
         if (timingSessionMap.isEmpty()) {
             return new ArrayList<>();
         }
@@ -334,7 +334,7 @@ public class MemoryCache implements Cache {
      * @return List<Scope> 作用域集合
      */
     @Override
-    public List<Scope> getMatePermScope() {
+    public List<Scope> getMatchPermScope() {
         if (permissionMap.isEmpty()) {
             return new ArrayList<>();
         }

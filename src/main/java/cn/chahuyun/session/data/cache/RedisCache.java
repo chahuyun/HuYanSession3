@@ -196,7 +196,7 @@ public class RedisCache implements Cache {
      * @return List<Scope> 作用域集合
      */
     @Override
-    public List<Scope> getMateSingSessionScope() {
+    public List<Scope> getMatchSingSessionScope() {
         return null;
     }
 
@@ -207,7 +207,7 @@ public class RedisCache implements Cache {
      * @return List<Scope> 作用域集合
      */
     @Override
-    public List<Scope> getMateManySessionScope() {
+    public List<Scope> getMatchManySessionScope() {
         return null;
     }
 
@@ -218,7 +218,7 @@ public class RedisCache implements Cache {
      * @return List<Scope> 作用域集合
      */
     @Override
-    public List<Scope> getMateTimingScope() {
+    public List<Scope> getMatchTimingScope() {
         return null;
     }
 
@@ -229,7 +229,7 @@ public class RedisCache implements Cache {
      * @return List<Scope> 作用域集合
      */
     @Override
-    public List<Scope> getMatePermScope() {
+    public List<Scope> getMatchPermScope() {
         return null;
     }
 }

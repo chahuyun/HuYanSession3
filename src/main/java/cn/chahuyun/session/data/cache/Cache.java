@@ -146,7 +146,7 @@ public interface Cache {
      *
      * @return List<Scope> 作用域集合
      */
-    List<Scope> getMateSingSessionScope();
+    List<Scope> getMatchSingSessionScope();
 
     /**
      * 获取用于多词条消息匹配的作用域<br>
@@ -154,7 +154,7 @@ public interface Cache {
      *
      * @return List<Scope> 作用域集合
      */
-    List<Scope> getMateManySessionScope();
+    List<Scope> getMatchManySessionScope();
 
     /**
      * 获取用于定时消息的作用域<br>
@@ -162,7 +162,7 @@ public interface Cache {
      *
      * @return List<Scope> 作用域集合
      */
-    List<Scope> getMateTimingScope();
+    List<Scope> getMatchTimingScope();
 
     /**
      * 获取用于权限信息的作用域<br>
@@ -170,7 +170,7 @@ public interface Cache {
      *
      * @return List<Scope> 作用域集合
      */
-    List<Scope> getMatePermScope();
+    List<Scope> getMatchPermScope();
 
 
 }
