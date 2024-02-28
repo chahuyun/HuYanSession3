@@ -1,10 +1,12 @@
 package cn.chahuyun.session.data.entity;
 
 import cn.chahuyun.session.data.BaseEntity;
+import cn.chahuyun.session.enums.MatchTriggerType;
+import cn.chahuyun.session.enums.MessageConversionType;
 import cn.chahuyun.session.enums.SessionType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.Objects;
 
 /**
  * 会话信息
@@ -37,10 +39,23 @@ public class SingleSession extends BaseEntity {
      * 概率触发
      */
     private Double probability;
+
+    /**
+     * 匹配方式
+     */
+    @Enumerated(EnumType.STRING)
+    private MatchTriggerType triggerType;
     /**
      * 消息类型
      */
-    private SessionType type;
+    @Enumerated(EnumType.STRING)
+    private SessionType sessionType;
+
+    /**
+     * 转换类型
+     */
+    @Enumerated(EnumType.STRING)
+    private MessageConversionType conversionType;
 
     public SingleSession() {
     }
@@ -77,31 +92,21 @@ public class SingleSession extends BaseEntity {
         this.local = local;
     }
 
-    public SessionType getType() {
-        return type;
+    public MatchTriggerType getTriggerType() {
+        return triggerType;
     }
 
-    public void setType(SessionType type) {
-        this.type = type;
+    public void setTriggerType(MatchTriggerType triggerType) {
+        this.triggerType = triggerType;
     }
 
-    public void setType(Integer type) {
-        switch (type) {
-            case 2:
-                this.type = SessionType.IMAGE;
-                break;
-            case 3:
-                this.type = SessionType.OTHER;
-                break;
-            case 4:
-                this.type = SessionType.MIXING;
-                break;
-            case 1:
-            default:
-                this.type = SessionType.TEXT;
-        }
+    public SessionType getSessionType() {
+        return sessionType;
     }
 
+    public void setSessionType(SessionType sessionType) {
+        this.sessionType = sessionType;
+    }
 
     public Double getProbability() {
         return probability;
@@ -115,22 +120,11 @@ public class SingleSession extends BaseEntity {
         }
     }
 
-    public SessionType getSessionType() {
-        return type;
+    public MessageConversionType getConversionType() {
+        return conversionType;
     }
 
-    public void setSessionType(SessionType type) {
-        this.type = type;
-    }
-
-    @Override
-    public String toString() {
-        return "SingleSession{" +
-                "id=" + getId() +
-                ", trigger='" + trigger + '\'' +
-                ", reply='" + reply + '\'' +
-                ", dynamic='" + dynamic + '\'' +
-                ", type=" + type +
-                '}';
+    public void setConversionType(MessageConversionType conversionType) {
+        this.conversionType = Objects.requireNonNullElse(conversionType, MessageConversionType.MIRAI_CODE);
     }
 }
