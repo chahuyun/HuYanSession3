@@ -249,22 +249,14 @@ public class Scope {
         this.type = type;
         if (type == Type.USERS) {
             this.usersName = listIdOrUsersName;
-            GroupedLists groupedLists = dataService.selectResultEntity(GroupedLists.class, "from GroupedLists where name = '%s'", listIdOrUsersName);
-            if (groupedLists == null) {
-                throw new RuntimeException("根据分组名查询分组用户错误:结果为空!");
-            }
-            this.users = groupedLists.getValueList();
+            this.users = DataFactory.getInstance().getDataService().getGroupedLists(listIdOrUsersName).getValueList();;
         } else {
             this.users = null;
             this.usersName = null;
         }
         if (type == Type.LIST) {
             this.listName = listIdOrUsersName;
-            GroupedLists groupedLists = dataService.selectResultEntity(GroupedLists.class, "from GroupedLists where name = '%s'", listIdOrUsersName);
-            if (groupedLists == null) {
-                throw new RuntimeException("根据分组名查询分组群错误:结果为空!");
-            }
-            this.groups = groupedLists.getValueList();
+            this.groups = DataFactory.getInstance().getDataService().getGroupedLists(listIdOrUsersName).getValueList();
         } else {
             this.listName = null;
             this.groups = null;
@@ -308,18 +300,15 @@ public class Scope {
      *
      * @param type       请输入分组群员作用域
      * @param group      群id
-     * @param memberName 分组群员id
+     * @param memberName 分组群员名称
      */
     public Scope(Type type, Long group, String memberName) {
         if (type != Type.GROUP_MEMBERS) {
             throw new IllegalArgumentException("作用域类型错误!");
         }
         this.group = group;
-        GroupedLists groupedLists = dataService.selectResultEntity(GroupedLists.class, "from GroupedLists where name = '%s'", memberName);
-        if (groupedLists == null) {
-            throw new RuntimeException("根据分组名查询分组群员错误:结果为空!");
-        }
-        this.members = groupedLists.getValueList();
+
+        this.members = DataFactory.getInstance().getDataService().getGroupedLists(memberName).getValueList();
         this.marker = String.format(type.valueTemplate, group, memberName);
         this.type = type;
 
