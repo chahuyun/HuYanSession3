@@ -3,7 +3,9 @@ package cn.chahuyun.session.event;
 import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.cache.Cache;
 import cn.chahuyun.session.data.cache.CacheFactory;
+import cn.chahuyun.session.data.entity.SingleSession;
 import cn.chahuyun.session.event.api.EventHanding;
+import cn.chahuyun.session.send.DefaultSendMessage;
 import cn.chahuyun.session.utils.MatchingTool;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.User;
@@ -33,14 +35,22 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
     @Override
     @EventHandler
     public void messageMatching(MessageEvent messageEvent) {
+        MessageChain messageChain = messageEvent.getMessage();
         Contact subject = messageEvent.getSubject();
         User sender = messageEvent.getSender();
 
+
+
         Cache cacheService = CacheFactory.getInstall().getCacheService();
-        List<Scope> mateSessionScope = cacheService.getMateSingSessionScope();
+        List<Scope> mateSessionScope = cacheService.getMatchSingSessionScope();
         for (Scope scope : mateSessionScope) {
             if (MatchingTool.matchScope(scope, subject, sender)) {
-
+                List<SingleSession> singleSessions = cacheService.getSingSession(scope);
+                for (SingleSession singleSession : singleSessions) {
+                    if (MatchingTool.matchTrigger(singleSession, messageChain)) {
+                        new DefaultSendMessage(singleSession, messageEvent).send();
+                    }
+                }
             }
         }
     }
