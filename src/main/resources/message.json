@@ -2,43 +2,43 @@
   {
     "type": "MessageSource",
     "kind": "GROUP",
-    "botId": 2061954151,
+    "botId": 3630254205,
     "ids": [
-      75817
+      76378
     ],
     "internalIds": [
-      1078796422
+      634945612
     ],
-    "time": 1708941783,
+    "time": 1709109157,
     "fromId": 572490972,
     "targetId": 390444068,
     "originalMessage": [
       {
         "type": "PlainText",
-        "content": "!"
+        "content": "xx  a6 "
       },
       {
         "type": "Image",
-        "imageId": "{73596890-7645-BC3E-F408-9948EDF75743}.jpg",
-        "size": 54024,
+        "imageId": "{D608E01E-52E4-8C6C-356B-C84D0BA484B8}.jpg",
+        "size": 17458,
         "imageType": "JPG",
-        "width": 1074,
-        "height": 1034,
+        "width": 300,
+        "height": 258,
         "isEmoji": true
       }
     ]
   },
   {
     "type": "PlainText",
-    "content": "!"
+    "content": "xx  a6 "
   },
   {
     "type": "Image",
-    "imageId": "{73596890-7645-BC3E-F408-9948EDF75743}.jpg",
-    "size": 54024,
+    "imageId": "{D608E01E-52E4-8C6C-356B-C84D0BA484B8}.jpg",
+    "size": 17458,
     "imageType": "JPG",
-    "width": 1074,
-    "height": 1034,
+    "width": 300,
+    "height": 258,
     "isEmoji": true
   }
 ]

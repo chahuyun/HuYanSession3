@@ -1,6 +1,8 @@
 package cn.chahuyun.session.data.cache;
 
+import cn.chahuyun.session.HuYanSession;
 import cn.chahuyun.session.config.SessionDataConfig;
+import cn.chahuyun.session.config.SessionPluginConfig;
 import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.entity.ManySession;
 import cn.chahuyun.session.data.entity.Permission;
@@ -354,11 +356,11 @@ public class MemoryCache implements Cache {
         List<Scope> sortedScopes = new ArrayList<>(scopes);
 
 
-        SessionDataConfig dataConfig = SessionDataConfig.INSTANCE;
+        SessionPluginConfig config = HuYanSession.config;
         // 定义Comparator用于比较Scope的Type在scopeSort列表中的位置
         Comparator<Scope> scopeComparator = (s1, s2) -> {
-            int index1 = dataConfig.getScopeSort().indexOf(s1.getType());
-            int index2 = dataConfig.getScopeSort().indexOf(s2.getType());
+            int index1 = config.getScopeSort().indexOf(s1.getType());
+            int index2 = config.getScopeSort().indexOf(s2.getType());
 
             // 如果两者都在范围内，则按索引值排序，否则保持原有顺序
             if (index1 != -1 && index2 != -1) {

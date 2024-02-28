@@ -1,7 +1,8 @@
 package cn.chahuyun.session.config
 
-import cn.chahuyun.session.enums.DataType
+import cn.chahuyun.session.data.Scope
 import cn.chahuyun.session.enums.CacheType
+import cn.chahuyun.session.enums.DataType
 import cn.chahuyun.session.enums.PermType
 import net.mamoe.mirai.console.data.AutoSavePluginConfig
 import net.mamoe.mirai.console.data.ValueDescription
@@ -19,13 +20,27 @@ object SessionPluginConfig : AutoSavePluginConfig("config") {
     var owner: Long by value()
 
     @ValueDescription("数据库链接方式")
-    var dataType:DataType by value(DataType.H2)
+    var dataType: DataType by value(DataType.H2)
 
-    @ValueDescription("权限前置")
-    var permType:PermType by value(PermType.DEFAULT)
+    @ValueDescription("权限类型")
+    var permType: PermType by value(PermType.DEFAULT)
 
-    @ValueDescription("缓存位置")
+    @ValueDescription("缓存类型")
     var cacheType: CacheType by value(CacheType.MEMORY)
+
+    @ValueDescription("是否默认开起本地缓存")
+    var localCache: Boolean by value(false)
+
+    @ValueDescription("数据查询排序(也可以理解为匹配优先级)")
+    val scopeSort: List<Scope.Type> by value(arrayListOf<Scope.Type>().apply {
+        add(Scope.Type.USERS)
+        add(Scope.Type.LIST)
+        add(Scope.Type.GROUP_MEMBERS)
+        add(Scope.Type.GROUP_MEMBER)
+        add(Scope.Type.GROUP)
+        add(Scope.Type.GLOBAL_USER)
+        add(Scope.Type.GLOBAL)
+    })
 }
 
 
