@@ -1,7 +1,6 @@
 package cn.chahuyun.session.data.cache;
 
 import cn.chahuyun.session.HuYanSession;
-import cn.chahuyun.session.config.SessionDataConfig;
 import cn.chahuyun.session.config.SessionPluginConfig;
 import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.entity.ManySession;
