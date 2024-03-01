@@ -1,6 +1,5 @@
 package cn.chahuyun.session.config
 
-import cn.chahuyun.session.data.Scope
 import net.mamoe.mirai.console.data.AutoSavePluginConfig
 import net.mamoe.mirai.console.data.ValueDescription
 import net.mamoe.mirai.console.data.value

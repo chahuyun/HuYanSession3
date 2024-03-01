@@ -34,9 +34,9 @@ public class DataManager {
     private static final String H2_BASE_PATH = "jdbc:h2:file:./data/cn.chahuyun.huyan-session-3/HuYan";
     private static final String SQLITE_BASE_PATH = "jdbc:sqlite:file:./data/cn.chahuyun.huyan-session-3/HuYan.sqlite";
     private static final String MYSQL_BASE_PATH = "jdbc:mysql://";
-    private static final SessionPluginConfig config = HuYanSession.config;
+    private static final SessionPluginConfig config = HuYanSession.pluginConfig;
 
-    private static final SessionDataConfig dataConfig = SessionDataConfig.INSTANCE;
+    private static final SessionDataConfig dataConfig = HuYanSession.dataConfig;
 
     /**
      * 加载数据库

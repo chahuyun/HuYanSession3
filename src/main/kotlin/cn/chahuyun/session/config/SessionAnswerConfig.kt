@@ -14,6 +14,11 @@ object SessionAnswerConfig : AutoSavePluginConfig("answerConfig") {
         add("学废了！")
     })
 
+    @ValueDescription("学习重复的回答")
+    val studyRepeat: List<String> by value(arrayListOf<String>().apply {
+        add("已经学过了！")
+    })
+
     @ValueDescription("学习失败的回答")
     val studyFailed: List<String> by value(arrayListOf<String>().apply {
         add("学不废！")

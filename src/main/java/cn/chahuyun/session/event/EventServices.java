@@ -1,5 +1,6 @@
 package cn.chahuyun.session.event;
 
+import cn.chahuyun.session.HuYanSession;
 import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.cache.Cache;
 import cn.chahuyun.session.data.cache.CacheFactory;
@@ -56,6 +57,7 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
                 for (SingleSession singleSession : singleSessions) {
                     if (MatchingTool.matchTrigger(singleSession, messageChain)) {
                         new DefaultSendMessage(singleSession, messageEvent).send();
+                        if (!HuYanSession.pluginConfig.getMatchAll()) return;
                     }
                 }
             }
@@ -87,7 +89,7 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
 
         String studySimpleSession = "^xx( +\\S+){2,7}|^学习( +\\S+){2,7}";
         if (Pattern.matches(studySimpleSession, content)) {
-            new SingleSessionControl().studySimpleSingleSession(message, subject, sender);
+            SingleSessionControl.INSTANCE.studySimpleSingleSession(message, subject, sender);
         }
     }
 }
