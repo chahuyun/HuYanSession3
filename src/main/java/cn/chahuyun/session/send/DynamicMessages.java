@@ -10,7 +10,7 @@ import net.mamoe.mirai.event.events.MessageEvent;
  */
 public class DynamicMessages {
 
-    private String reply;
+    private final String reply;
 
     private final MessageEvent event;
 

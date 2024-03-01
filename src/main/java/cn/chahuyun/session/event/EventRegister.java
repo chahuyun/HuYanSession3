@@ -33,7 +33,7 @@ public class EventRegister {
         globalEvent = GlobalEventChannel.INSTANCE
                 .parentScope(plugin)
                 .exceptionHandler(new ExceptionHandle());
-        if (HuYanSession.config.getPermType() == PermType.AUTHORIZE) {
+        if (HuYanSession.pluginConfig.getPermType() == PermType.AUTHORIZE) {
             log.warn("暂未实现接入Authorize");
         } else {
             globalEvent.registerListenerHost(new EventServices((CoroutineContext) new ExceptionHandle()));
