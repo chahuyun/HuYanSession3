@@ -1,18 +1,22 @@
 package cn.chahuyun.session.event.session;
 
-import cn.chahuyun.session.HuYanSession;
-import cn.chahuyun.session.config.SessionAnswerConfig;
 import cn.chahuyun.session.data.Scope;
+import cn.chahuyun.session.data.cache.Cache;
 import cn.chahuyun.session.data.cache.CacheFactory;
 import cn.chahuyun.session.data.entity.SingleSession;
 import cn.chahuyun.session.data.factory.DataFactory;
 import cn.chahuyun.session.enums.MatchTriggerType;
 import cn.chahuyun.session.enums.MessageConversionType;
 import cn.chahuyun.session.enums.SessionType;
-import cn.hutool.core.util.RandomUtil;
+import cn.chahuyun.session.utils.AnswerTool;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.User;
 import net.mamoe.mirai.message.data.*;
+
+import java.util.List;
+
+import static cn.chahuyun.session.HuYanSession.answerConfig;
+import static cn.chahuyun.session.HuYanSession.pluginConfig;
 
 /**
  * 单一消息处理
@@ -22,6 +26,7 @@ import net.mamoe.mirai.message.data.*;
  */
 public class SingleSessionControl {
 
+    public static final SingleSessionControl INSTANCE = new SingleSessionControl();
 
     /**
      * 简单学习消息
@@ -41,10 +46,12 @@ public class SingleSessionControl {
         MatchTriggerType matchTriggerType = MatchTriggerType.PRECISION;
         MessageConversionType conversionType = MessageConversionType.MIRAI_CODE;
         SessionType sessionType = SessionType.TEXT;
-        boolean localCache = HuYanSession.config.getLocalCache();
+        boolean localCache = pluginConfig.getLocalCache();
         boolean dynamic = false;
         double probability = 1.0;
         Scope scope = new Scope(Scope.Type.GROUP, subject.getId());
+
+        boolean rewrite = false;
 
         if (params.length > 3) {
             for (int i = 3; i < params.length; i++) {
@@ -72,6 +79,9 @@ public class SingleSessionControl {
                     case "5":
                         matchTriggerType = MatchTriggerType.REGULAR;
                         continue;
+                    case "rewrite":
+                        rewrite = true;
+                        break;
                     case "dynamic":
                     case "动态":
                         dynamic = true;
@@ -139,6 +149,23 @@ public class SingleSessionControl {
             }
         }
 
+        SingleSession singleSession = new SingleSession();
+
+        Cache cacheService = CacheFactory.getInstall().getCacheService();
+        List<SingleSession> cacheServiceSingSession = cacheService.getSingSession(scope);
+        if (!cacheServiceSingSession.isEmpty()) {
+            for (SingleSession session : cacheServiceSingSession) {
+                if (session.getTrigger().equals(trigger)) {
+                    if (rewrite) {
+                        singleSession.setId(session.getId());
+                    } else {
+                        subject.sendMessage(AnswerTool.getAnswer(answerConfig.getStudyRepeat()));
+                        return;
+                    }
+                }
+            }
+        }
+
         if (localCache) {
             //todo 本地缓存
         }
@@ -183,7 +210,7 @@ public class SingleSessionControl {
 
         reply = MessageChain.serializeToJsonString(singleMessages);
 
-        SingleSession singleSession = new SingleSession();
+
         singleSession.setTrigger(trigger);
         singleSession.setReply(reply);
         singleSession.setDynamic(dynamic);
@@ -194,13 +221,13 @@ public class SingleSessionControl {
         singleSession.setConversionType(conversionType);
         singleSession.setScope(scope);
 
-        SessionAnswerConfig instance = SessionAnswerConfig.INSTANCE;
+
         String result;
         if (DataFactory.getInstance().getDataService().mergeEntityStatus(singleSession)) {
-            result = instance.getStudySuccess().get(RandomUtil.randomInt(0, instance.getStudySuccess().size()));
-            CacheFactory.getInstall().getCacheService().putSession(singleSession);
+            result = AnswerTool.getAnswer(answerConfig.getStudySuccess());
+            cacheService.putSession(singleSession);
         } else {
-            result = instance.getStudyFailed().get(RandomUtil.randomInt(0, instance.getStudySuccess().size()));
+            result = AnswerTool.getAnswer(answerConfig.getStudyFailed());
         }
         subject.sendMessage(result);
     }
