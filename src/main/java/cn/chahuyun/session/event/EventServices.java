@@ -1,6 +1,7 @@
 package cn.chahuyun.session.event;
 
 import cn.chahuyun.session.HuYanSession;
+import cn.chahuyun.session.constant.Constant;
 import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.cache.Cache;
 import cn.chahuyun.session.data.cache.CacheFactory;
@@ -12,6 +13,7 @@ import cn.chahuyun.session.event.session.SingleSessionControl;
 import cn.chahuyun.session.send.DefaultSendMessage;
 import cn.chahuyun.session.utils.MatchingTool;
 import kotlin.coroutines.CoroutineContext;
+import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.User;
 import net.mamoe.mirai.event.EventHandler;
@@ -31,6 +33,7 @@ import java.util.regex.Pattern;
  *
  * @author Moyuyanli
  */
+@Slf4j(topic = Constant.LOG_TOPIC)
 public class EventServices extends SimpleListenerHost implements EventHanding {
 
     public EventServices(@NotNull CoroutineContext coroutineContext) {
@@ -103,10 +106,15 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
 
         if (owner || permUser.isAdmin() || permUser.isSession() || permUser.isHh()) {
             String studySimpleSession = "^xx( +\\S+){2,7}|^学习( +\\S+){2,7}";
+            String removeSimpleSession = "^-xx( +\\S+){1,2}|^删除( +\\S+){1,2}";
             if (Pattern.matches(studySimpleSession, content)) {
+                log.debug("简单学习指令");
                 SingleSessionControl.INSTANCE.studySimpleSingleSession(message, subject, sender);
-                return;
+            } else if (Pattern.matches(removeSimpleSession, content)) {
+                log.debug("简单删除指令");
+                SingleSessionControl.INSTANCE.removeSimpleSingleSession(message, subject, sender);
             }
+            return;
         }
 
         if (owner || permUser.isAdmin() || permUser.isSession() || permUser.isDct()) {
@@ -116,8 +124,6 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
                 return;
             }
         }
-
-
 
 
         //todo 匹配指令
@@ -133,6 +139,12 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
     }
 
 
+    /**
+     * 合并权限
+     *
+     * @param permUser  源权限
+     * @param otherPerm 需要合并的权限
+     */
     private void mergePerm(Permission permUser, Permission otherPerm) {
         permUser.setAdmin(permUser.isAdmin() || otherPerm.isAdmin());
         permUser.setSession(permUser.isSession() || otherPerm.isSession());
