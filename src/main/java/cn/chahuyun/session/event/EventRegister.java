@@ -1,6 +1,7 @@
 package cn.chahuyun.session.event;
 
 import cn.chahuyun.session.HuYanSession;
+import cn.chahuyun.session.constant.Constant;
 import cn.chahuyun.session.enums.PermType;
 import cn.chahuyun.session.exception.ExceptionHandle;
 import kotlin.coroutines.CoroutineContext;
@@ -15,7 +16,7 @@ import net.mamoe.mirai.event.GlobalEventChannel;
  * @author Moyuyanli
  * @date 2024/1/15 11:07
  */
-@Slf4j(topic = "HuYanSession3")
+@Slf4j(topic = Constant.LOG_TOPIC)
 public class EventRegister {
 
     static EventChannel<Event> globalEvent;
@@ -33,7 +34,7 @@ public class EventRegister {
         globalEvent = GlobalEventChannel.INSTANCE
                 .parentScope(plugin)
                 .exceptionHandler(new ExceptionHandle());
-        if (HuYanSession.config.getPermType() == PermType.AUTHORIZE) {
+        if (HuYanSession.pluginConfig.getPermType() == PermType.AUTHORIZE) {
             log.warn("暂未实现接入Authorize");
         } else {
             globalEvent.registerListenerHost(new EventServices((CoroutineContext) new ExceptionHandle()));

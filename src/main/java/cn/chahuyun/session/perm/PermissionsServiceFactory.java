@@ -1,6 +1,7 @@
 package cn.chahuyun.session.perm;
 
 import cn.chahuyun.api.permission.api.HuYanPermissionService;
+import cn.chahuyun.session.constant.Constant;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -9,12 +10,11 @@ import lombok.extern.slf4j.Slf4j;
  * @author Moyuyanli
  * @Date 2024/2/22 22:10
  */
-@Slf4j(topic = "HuYanSession3")
+@Slf4j(topic = Constant.LOG_TOPIC)
 public class PermissionsServiceFactory {
 
-    private final HuYanPermissionService permissionService;
-
     private static PermissionsServiceFactory instance;
+    private final HuYanPermissionService permissionService;
 
     public PermissionsServiceFactory(HuYanPermissionService permissionService) {
         this.permissionService = permissionService;

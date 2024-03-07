@@ -3,6 +3,7 @@ package cn.chahuyun.session.manager;
 import cn.chahuyun.session.HuYanSession;
 import cn.chahuyun.session.config.SessionDataConfig;
 import cn.chahuyun.session.config.SessionPluginConfig;
+import cn.chahuyun.session.constant.Constant;
 import cn.chahuyun.session.data.factory.DataFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.HibernateException;
@@ -19,7 +20,7 @@ import java.util.Properties;
  * @author Moyuyanli
  * @date 2024/1/3 10:15
  */
-@Slf4j(topic = "HuYanSession3")
+@Slf4j(topic = Constant.LOG_TOPIC)
 public class DataManager {
 
     /**

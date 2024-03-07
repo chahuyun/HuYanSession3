@@ -2,6 +2,7 @@ package cn.chahuyun.session.manager;
 
 import cn.chahuyun.api.permission.api.HuYanPermissionService;
 import cn.chahuyun.session.config.SessionPluginConfig;
+import cn.chahuyun.session.constant.Constant;
 import cn.chahuyun.session.data.cache.Cache;
 import cn.chahuyun.session.data.cache.CacheFactory;
 import cn.chahuyun.session.data.cache.MemoryCache;
@@ -19,7 +20,7 @@ import java.util.ServiceLoader;
  * @author Moyuyanli
  * @date 2023/12/29 10:30
  */
-@Slf4j(topic = "HuYanSession3")
+@Slf4j(topic = Constant.LOG_TOPIC)
 public class PluginManager {
 
     public static PluginManager INSTANCE = new PluginManager();
@@ -63,7 +64,6 @@ public class PluginManager {
                 break;
         }
         PermissionsServiceFactory.init(permissionService);
-
 
 
         //加载缓存服务

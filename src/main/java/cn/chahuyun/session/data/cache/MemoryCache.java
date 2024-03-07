@@ -355,7 +355,7 @@ public class MemoryCache implements Cache {
         List<Scope> sortedScopes = new ArrayList<>(scopes);
 
 
-        SessionPluginConfig config = HuYanSession.config;
+        SessionPluginConfig config = HuYanSession.pluginConfig;
         // 定义Comparator用于比较Scope的Type在scopeSort列表中的位置
         Comparator<Scope> scopeComparator = (s1, s2) -> {
             int index1 = config.getScopeSort().indexOf(s1.getType());

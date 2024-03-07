@@ -1,5 +1,6 @@
 package cn.chahuyun.session.data.cache;
 
+import cn.chahuyun.session.constant.Constant;
 import cn.chahuyun.session.data.entity.ManySession;
 import cn.chahuyun.session.data.entity.Permission;
 import cn.chahuyun.session.data.entity.SingleSession;
@@ -17,7 +18,7 @@ import java.util.List;
  *
  * @author Moyuyanli
  */
-@Slf4j(topic = "HuYanSession3")
+@Slf4j(topic = Constant.LOG_TOPIC)
 public class CacheFactory {
 
     private static CacheFactory instance;

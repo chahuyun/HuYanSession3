@@ -1,5 +1,6 @@
 package cn.chahuyun.session.data.factory;
 
+import cn.chahuyun.session.constant.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 
@@ -9,7 +10,7 @@ import org.hibernate.SessionFactory;
  * @author Moyuyanli
  * @date 2024/1/3 13:17
  */
-@Slf4j(topic = "HuYanSession3")
+@Slf4j(topic = Constant.LOG_TOPIC)
 public class DataFactory {
 
     private static DataFactory instance;
@@ -31,6 +32,15 @@ public class DataFactory {
     }
 
     /**
+     * 获取数据工厂实例
+     *
+     * @return 数据工厂
+     */
+    public static DataFactory getInstance() {
+        return instance;
+    }
+
+    /**
      * 创建数据服务，使用默认的数据服务
      *
      * @param sessionFactory session
@@ -38,16 +48,6 @@ public class DataFactory {
      */
     private AbstractDataService createDataService(SessionFactory sessionFactory) {
         return new DefaultDataService(sessionFactory);
-    }
-
-
-    /**
-     * 获取数据工厂实例
-     *
-     * @return 数据工厂
-     */
-    public static DataFactory getInstance() {
-        return instance;
     }
 
     /**

@@ -3,6 +3,7 @@ package cn.chahuyun.session;
 import cn.chahuyun.session.config.SessionAnswerConfig;
 import cn.chahuyun.session.config.SessionDataConfig;
 import cn.chahuyun.session.config.SessionPluginConfig;
+import cn.chahuyun.session.constant.Constant;
 import cn.chahuyun.session.data.entity.SingleSession;
 import cn.chahuyun.session.data.factory.DataFactory;
 import cn.chahuyun.session.event.EventRegister;
@@ -16,11 +17,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-@Slf4j(topic = "HuYanSession3")
+@Slf4j(topic = Constant.LOG_TOPIC)
 public final class HuYanSession extends JavaPlugin {
 
     public static final HuYanSession INSTANCE = new HuYanSession();
-
+    public static final String VERSION = "1.0.0";
     /**
      * 插件配置
      */
@@ -33,9 +34,6 @@ public final class HuYanSession extends JavaPlugin {
      * 回答的配置
      */
     public static SessionAnswerConfig answerConfig = SessionAnswerConfig.INSTANCE;
-
-
-    public static final String VERSION = "1.0.0";
 
 
     private HuYanSession() {

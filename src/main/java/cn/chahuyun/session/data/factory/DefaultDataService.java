@@ -1,5 +1,6 @@
 package cn.chahuyun.session.data.factory;
 
+import cn.chahuyun.session.constant.Constant;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.intellij.lang.annotations.Language;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Moyuyanli
  * @Date 2024/2/24 13:16
  */
-@Slf4j(topic = "HuYanSession3")
+@Slf4j(topic = Constant.LOG_TOPIC)
 public class DefaultDataService extends AbstractDataService {
 
     protected DefaultDataService(SessionFactory sessionFactory) {

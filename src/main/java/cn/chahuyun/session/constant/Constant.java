@@ -12,6 +12,10 @@ import java.util.List;
  * @date 2024/1/3 13:36
  */
 public class Constant {
+    /**
+     * 日志前缀
+     */
+    public static final String LOG_TOPIC = "HuYanSession3";
 
     /**
      * 作用域类型的单参数集合
@@ -39,8 +43,6 @@ public class Constant {
         add(Scope.Type.LIST);
         add(Scope.Type.USERS);
     }};
-
-
 
 
 }
