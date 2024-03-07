@@ -248,14 +248,14 @@ public class Scope {
         this.type = type;
         if (type == Type.USERS) {
             this.usersName = listIdOrUsersName;
-            this.users = DataFactory.getInstance().getDataService().getGroupedLists(listIdOrUsersName).getValueList();
+            this.users = dataService.getGroupedLists(listIdOrUsersName).getValueList();
         } else {
             this.users = null;
             this.usersName = null;
         }
         if (type == Type.LIST) {
             this.listName = listIdOrUsersName;
-            this.groups = DataFactory.getInstance().getDataService().getGroupedLists(listIdOrUsersName).getValueList();
+            this.groups = dataService.getGroupedLists(listIdOrUsersName).getValueList();
         } else {
             this.listName = null;
             this.groups = null;
@@ -307,7 +307,7 @@ public class Scope {
         }
         this.group = group;
 
-        this.members = DataFactory.getInstance().getDataService().getGroupedLists(memberName).getValueList();
+        this.members = dataService.getGroupedLists(memberName).getValueList();
         this.marker = String.format(type.valueTemplate, group, memberName);
         this.type = type;
 
