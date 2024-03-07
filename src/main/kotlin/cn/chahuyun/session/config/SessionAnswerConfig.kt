@@ -23,4 +23,14 @@ object SessionAnswerConfig : AutoSavePluginConfig("answerConfig") {
     val studyFailed: List<String> by value(arrayListOf<String>().apply {
         add("学不废！")
     })
+
+    @ValueDescription("删除成功的回答")
+    val removeSuccess: List<String> by value(arrayListOf<String>().apply {
+        add("忘记了！")
+    })
+
+    @ValueDescription("删除失败的回答")
+    val removeFailed: List<String> by value(arrayListOf<String>().apply {
+        add("忘不掉！")
+    })
 }
