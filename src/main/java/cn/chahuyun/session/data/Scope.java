@@ -1,7 +1,6 @@
 package cn.chahuyun.session.data;
 
 import cn.chahuyun.session.constant.Constant;
-import cn.chahuyun.session.data.entity.GroupedLists;
 import cn.chahuyun.session.data.factory.AbstractDataService;
 import cn.chahuyun.session.data.factory.DataFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -249,7 +248,7 @@ public class Scope {
         this.type = type;
         if (type == Type.USERS) {
             this.usersName = listIdOrUsersName;
-            this.users = DataFactory.getInstance().getDataService().getGroupedLists(listIdOrUsersName).getValueList();;
+            this.users = DataFactory.getInstance().getDataService().getGroupedLists(listIdOrUsersName).getValueList();
         } else {
             this.users = null;
             this.usersName = null;

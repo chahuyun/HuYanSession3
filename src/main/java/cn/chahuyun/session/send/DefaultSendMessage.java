@@ -19,29 +19,34 @@ public class DefaultSendMessage implements SendMessage {
 
     private SingleSession singleSession;
 
-    private ManySession manySession;
+    private final ManySession manySession;
 
-    private TimingSession timingSession;
+    private final TimingSession timingSession;
 
-    private MessageEvent messageEvent;
+    private final MessageEvent messageEvent;
 
-    private SendType sendType;
+    private final SendType sendType;
 
     public DefaultSendMessage(SingleSession singleSession, MessageEvent messageEvent) {
         this.singleSession = singleSession;
         this.messageEvent = messageEvent;
+        this.timingSession = null;
+        this.manySession = null;
         this.sendType = SendType.SING;
     }
 
     public DefaultSendMessage(ManySession manySession, MessageEvent messageEvent) {
         this.manySession = manySession;
         this.messageEvent = messageEvent;
+        this.timingSession = null;
         this.sendType = SendType.MANY;
     }
 
     public DefaultSendMessage(TimingSession timingSession, MessageEvent messageEvent) {
         this.timingSession = timingSession;
         this.messageEvent = messageEvent;
+        this.singleSession = null;
+        this.manySession = null;
         this.sendType = SendType.TIMING;
     }
 
