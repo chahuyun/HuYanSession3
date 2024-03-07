@@ -15,5 +15,4 @@ import jakarta.persistence.Table;
 public class Blacklist extends BaseEntity {
 
 
-
 }

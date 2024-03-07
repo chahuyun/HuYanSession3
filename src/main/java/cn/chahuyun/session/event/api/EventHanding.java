@@ -12,12 +12,14 @@ public interface EventHanding {
 
     /**
      * 匹配消息
+     *
      * @param messageEvent 消息事件
      */
     void messageMatching(MessageEvent messageEvent);
 
     /**
      * 匹配指令
+     *
      * @param messageEvent 消息事件
      */
     void commandMatching(MessageEvent messageEvent);

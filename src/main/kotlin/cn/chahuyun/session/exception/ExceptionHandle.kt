@@ -11,7 +11,7 @@ import kotlin.coroutines.CoroutineContext
  * @date 2024/1/15 11:20
  */
 class ExceptionHandle : CoroutineExceptionHandler {
-    
+
     override val key: CoroutineContext.Key<*>
         get() = CoroutineExceptionHandler.Key
 

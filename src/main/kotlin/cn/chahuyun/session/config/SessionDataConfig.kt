@@ -13,8 +13,7 @@ object SessionDataConfig : AutoSavePluginConfig("dataConfig") {
     val user: String by value("root")
 
     @ValueDescription("mysql数据库密码")
-    val password:String by value("123456")
-
+    val password: String by value("123456")
 
 
 }
