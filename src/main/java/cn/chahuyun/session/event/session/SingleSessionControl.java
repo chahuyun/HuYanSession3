@@ -1,22 +1,23 @@
 package cn.chahuyun.session.event.session;
 
+import cn.chahuyun.session.data.ParameterSet;
 import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.cache.Cache;
 import cn.chahuyun.session.data.cache.CacheFactory;
 import cn.chahuyun.session.data.entity.SingleSession;
+import cn.chahuyun.session.data.factory.AbstractDataService;
 import cn.chahuyun.session.data.factory.DataFactory;
-import cn.chahuyun.session.enums.MatchTriggerType;
-import cn.chahuyun.session.enums.MessageConversionType;
 import cn.chahuyun.session.enums.SessionType;
 import cn.chahuyun.session.utils.AnswerTool;
+import cn.hutool.core.util.ArrayUtil;
 import net.mamoe.mirai.contact.Contact;
 import net.mamoe.mirai.contact.User;
 import net.mamoe.mirai.message.data.*;
 
 import java.util.List;
+import java.util.Objects;
 
 import static cn.chahuyun.session.HuYanSession.answerConfig;
-import static cn.chahuyun.session.HuYanSession.pluginConfig;
 
 /**
  * 单一消息处理
@@ -29,7 +30,8 @@ public class SingleSessionControl {
     public static final SingleSessionControl INSTANCE = new SingleSessionControl();
 
     /**
-     * 简单学习消息
+     * 简单学习消息<br>
+     * xx trigger reply [scope|dynamic|rewrite|probability|localCache|matchTriggerType|conversionType]
      *
      * @param messages 消息
      * @param subject  消息事件主体
@@ -43,110 +45,21 @@ public class SingleSessionControl {
         String trigger = params[1];
         String reply = params[2];
 
-        MatchTriggerType matchTriggerType = MatchTriggerType.PRECISION;
-        MessageConversionType conversionType = MessageConversionType.MIRAI_CODE;
+        ParameterSet parameterSet;
         SessionType sessionType = SessionType.TEXT;
-        boolean localCache = pluginConfig.getLocalCache();
-        boolean dynamic = false;
-        double probability = 1.0;
         Scope scope = new Scope(Scope.Type.GROUP, subject.getId());
 
-        boolean rewrite = false;
 
         if (params.length > 3) {
-            for (int i = 3; i < params.length; i++) {
-                String param = params[i];
+            String[] sub = ArrayUtil.sub(params, 3, params.length);
+            parameterSet = new ParameterSet(scope, subject, sub);
+        } else {
+            parameterSet = new ParameterSet(scope, subject);
+        }
 
-                switch (param) {
-                    case "全局":
-                    case "global":
-                    case "0":
-                        scope = new Scope(Scope.Type.GLOBAL);
-                        continue;
-                    case "模糊":
-                    case "2":
-                        matchTriggerType = MatchTriggerType.FUZZY;
-                        continue;
-                    case "头部":
-                    case "3":
-                        matchTriggerType = MatchTriggerType.HEAD;
-                        continue;
-                    case "尾部":
-                    case "4":
-                        matchTriggerType = MatchTriggerType.TAIL;
-                        continue;
-                    case "正则":
-                    case "5":
-                        matchTriggerType = MatchTriggerType.REGULAR;
-                        continue;
-                    case "rewrite":
-                        rewrite = true;
-                        break;
-                    case "dynamic":
-                    case "动态":
-                        dynamic = true;
-                        continue;
-                    case "cache":
-                        localCache = true;
-                        continue;
-                    case "STRING":
-                        conversionType = MessageConversionType.STRING;
-                        continue;
-                    case "CONTENT":
-                        conversionType = MessageConversionType.CONTENT;
-                        continue;
-                    case "JSON":
-                        conversionType = MessageConversionType.JSON;
-                        continue;
-                }
-
-                if (param.contains("global-")) {
-                    MessageChain userMessage = MessageChain.deserializeFromMiraiCode(param, subject);
-                    if (userMessage.contains(At.Key)) {
-                        At at = (At) userMessage.get(At.Key);
-                        if (at != null) {
-                            scope = new Scope(Scope.Type.GLOBAL_USER, at.getTarget());
-                            continue;
-                        }
-                    }
-                    try {
-                        long aLong = Long.parseLong(param.replace("global-", ""));
-                        scope = new Scope(Scope.Type.GLOBAL_USER, aLong);
-                    } catch (NumberFormatException e) {
-                        subject.sendMessage("你的参数有误:global识别失败");
-                        return;
-                    }
-                } else if (param.contains("member-")) {
-                    MessageChain userMessage = MessageChain.deserializeFromMiraiCode(param, subject);
-                    if (userMessage.contains(At.Key)) {
-                        At at = (At) userMessage.get(At.Key);
-                        if (at != null) {
-                            scope = new Scope(Scope.Type.GROUP_MEMBER, subject.getId(), at.getTarget());
-                            continue;
-                        }
-                    }
-                    try {
-                        long aLong = Long.parseLong(param.replace("member-", ""));
-                        scope = new Scope(Scope.Type.GROUP_MEMBER, subject.getId(), aLong);
-                    } catch (NumberFormatException e) {
-                        subject.sendMessage("你的参数有误:member 识别失败");
-                        return;
-                    }
-                } else if (param.contains("list-")) {
-                    scope = new Scope(Scope.Type.LIST, param.replace("list-", ""));
-                } else if (param.contains("users-")) {
-                    scope = new Scope(Scope.Type.USERS, param.replace("users-", ""));
-                } else if (param.contains("members-")) {
-                    scope = new Scope(Scope.Type.GROUP_MEMBERS, subject.getId(), param.replace("members-", ""));
-                } else if (param.contains("probability-")) {
-                    try {
-                        probability = Double.parseDouble(param.replace("probability-", ""));
-                    } catch (NumberFormatException e) {
-                        subject.sendMessage("你的参数有误:probability 识别失败");
-                        return;
-                    }
-                }
-            }
+        if (parameterSet.isException()) {
+            subject.sendMessage(parameterSet.getExceptionMsg());
+            return;
         }
 
         SingleSession singleSession = new SingleSession();
@@ -156,7 +69,7 @@ public class SingleSessionControl {
         if (!cacheServiceSingSession.isEmpty()) {
             for (SingleSession session : cacheServiceSingSession) {
                 if (session.getTrigger().equals(trigger)) {
-                    if (rewrite) {
+                    if (parameterSet.isRewrite()) {
                         singleSession.setId(session.getId());
                     } else {
                         subject.sendMessage(AnswerTool.getAnswer(answerConfig.getStudyRepeat()));
@@ -166,7 +79,7 @@ public class SingleSessionControl {
             }
         }
 
-        if (localCache) {
+        if (parameterSet.isLocalCache()) {
             //todo 本地缓存
         }
 
@@ -213,12 +126,12 @@ public class SingleSessionControl {
 
         singleSession.setTrigger(trigger);
         singleSession.setReply(reply);
-        singleSession.setDynamic(dynamic);
-        singleSession.setLocal(localCache);
-        singleSession.setProbability(probability);
+        singleSession.setDynamic(parameterSet.isDynamic());
+        singleSession.setLocal(parameterSet.isLocalCache());
+        singleSession.setProbability(parameterSet.getProbability());
         singleSession.setSessionType(sessionType);
-        singleSession.setTriggerType(matchTriggerType);
-        singleSession.setConversionType(conversionType);
+        singleSession.setTriggerType(parameterSet.getMatchTriggerType());
+        singleSession.setConversionType(parameterSet.getConversionType());
         singleSession.setScope(scope);
 
 
@@ -231,5 +144,64 @@ public class SingleSessionControl {
         }
         subject.sendMessage(result);
     }
+
+    /**
+     * 删除词条
+     * -xx trigger [scope|id]
+     *
+     * @param messages 消息
+     * @param subject  消息事件主体
+     * @param sender   发送着
+     */
+    public void removeSimpleSingleSession(MessageChain messages, Contact subject, User sender) {
+        String code = messages.serializeToMiraiCode();
+
+        String[] params = code.split("\\s+");
+        String trigger = params[1];
+
+        ParameterSet parameterSet;
+        Scope scope = new Scope(Scope.Type.GROUP, subject.getId());
+        if (params.length > 2) {
+            parameterSet = new ParameterSet(scope, ArrayUtil.sub(params, 2, params.length));
+        } else {
+            parameterSet = new ParameterSet(scope);
+        }
+
+        if (parameterSet.isException()) {
+            subject.sendMessage(parameterSet.getExceptionMsg());
+            return;
+        }
+
+        Cache cacheService = CacheFactory.getInstall().getCacheService();
+        AbstractDataService dataService = DataFactory.getInstance().getDataService();
+        List<SingleSession> singSession = cacheService.getSingSession(scope);
+
+        if (parameterSet.getId() != null) {
+            for (SingleSession singleSession : singSession) {
+                if (Objects.equals(singleSession.getId(), parameterSet.getId().intValue())) {
+                    if (trigger.equals(singleSession.getTrigger())) {
+                        if (dataService.deleteEntity(singleSession)) {
+                            cacheService.removeSingSession(singleSession.getId());
+                            subject.sendMessage(AnswerTool.getAnswer(answerConfig.getRemoveSuccess()));
+                        } else {
+                            subject.sendMessage(AnswerTool.getAnswer(answerConfig.getRemoveFailed()));
+                        }
+                    }
+                }
+            }
+        } else {
+            for (SingleSession singleSession : singSession) {
+                if (trigger.equals(singleSession.getTrigger())) {
+                    if (dataService.deleteEntity(singleSession)) {
+                        cacheService.removeSingSession(singleSession.getId());
+                        subject.sendMessage(AnswerTool.getAnswer(answerConfig.getRemoveSuccess()));
+                    } else {
+                        subject.sendMessage(AnswerTool.getAnswer(answerConfig.getRemoveFailed()));
+                    }
+                }
+            }
+        }
+    }
+
 
 }
