@@ -4,6 +4,11 @@ import cn.chahuyun.session.constant.Constant;
 import cn.chahuyun.session.data.factory.AbstractDataService;
 import cn.chahuyun.session.data.factory.DataFactory;
 import lombok.extern.slf4j.Slf4j;
+import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.contact.Friend;
+import net.mamoe.mirai.contact.Group;
+import net.mamoe.mirai.contact.NormalMember;
+import net.mamoe.mirai.contact.Stranger;
 
 import java.util.List;
 import java.util.Objects;
@@ -377,4 +382,81 @@ public class Scope {
     public String getMembersName() {
         return membersName;
     }
+
+    @Override
+    public String toString() {
+        List<Bot> instances = Bot.getInstances();
+        Bot bot = null;
+        if (!instances.isEmpty()) {
+            bot = instances.get(0);
+        }
+        switch (type) {
+            case GLOBAL:
+                return "全局";
+            case GLOBAL_USER:
+                String name = getUser().toString();
+                if (bot != null) {
+                    Friend friend = bot.getFriend(getUser());
+                    if (friend != null) {
+                        name = concat(friend.getNick(), name);
+                    } else {
+                        Stranger stranger = bot.getStranger(getUser());
+                        if (stranger != null) {
+                            name = concat(stranger.getNick(), name);
+                        }
+                    }
+                }
+                return String.format("全局用户-%s", name);
+            case GROUP:
+                String groupName = getGroup().toString();
+                if (bot != null) {
+                    Group group = bot.getGroup(getGroup());
+                    if (group != null) {
+                        groupName = concat(group.getName(), groupName);
+                    }
+                }
+                return String.format("群-%s", groupName);
+            case GROUP_MEMBER:
+                groupName = getGroup().toString();
+                String groupMemberName = getMember().toString();
+                if (bot != null) {
+                    Group group = bot.getGroup(getGroup());
+                    if (group != null) {
+                        groupName = concat(group.getName(), groupName);
+                        NormalMember normalMember = group.get(getMember());
+                        if (normalMember != null) {
+                            groupMemberName = concat(normalMember.getNameCard(), groupMemberName);
+                        }
+                    }
+                }
+                return String.format("群-%s-成员-%s", groupName, groupMemberName);
+            case LIST:
+                return String.format("群组-%s", getListName());
+            case USERS:
+                return String.format("人员组-%s", getUsersName());
+            case GROUP_MEMBERS:
+                groupName = getGroup().toString();
+                if (bot != null) {
+                    Group group = bot.getGroup(getGroup());
+                    if (group != null) {
+                        groupName = concat(group.getName(), groupName);
+                    }
+                }
+                return String.format("群-%s-成员组-%s", groupName, getMembersName());
+            default:
+                return "作用域错误!";
+        }
+    }
+
+    /**
+     * 按照格式拼接字符
+     *
+     * @param name   名称
+     * @param number 账号
+     * @return 拼接后的字符
+     */
+    private String concat(String name, String number) {
+        return name + "(" + number + ")";
+    }
+
 }
