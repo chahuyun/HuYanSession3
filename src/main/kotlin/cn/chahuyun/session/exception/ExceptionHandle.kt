@@ -15,7 +15,7 @@ class ExceptionHandle : CoroutineExceptionHandler {
     override val key: CoroutineContext.Key<*>
         get() = CoroutineExceptionHandler.Key
 
-    override fun handleException(coroutineContext: CoroutineContext, throwable: Throwable) {
-        HuYanSession.INSTANCE.logger.error(throwable)
+    override fun handleException(context: CoroutineContext, exception: Throwable) {
+        HuYanSession.INSTANCE.logger.error(exception)
     }
 }
