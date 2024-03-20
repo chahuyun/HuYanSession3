@@ -26,6 +26,10 @@ public class PluginManager {
     public static PluginManager INSTANCE = new PluginManager();
 
     private SessionPluginConfig config;
+    /**
+     * 是否接入壶言授权
+     */
+    private boolean isAuthorize;
 
     private PluginManager() {
     }
@@ -63,6 +67,7 @@ public class PluginManager {
                 permissionService = first.orElseGet(DefaultPermissions::new);
                 break;
         }
+        isAuthorize = !(permissionService instanceof DefaultPermissions);
         PermissionsServiceFactory.init(permissionService);
 
 
@@ -77,8 +82,9 @@ public class PluginManager {
         }
         CacheFactory.init(cache);
 
-
     }
 
-
+    public boolean isAuthorize() {
+        return isAuthorize;
+    }
 }
