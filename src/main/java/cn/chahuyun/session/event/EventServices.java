@@ -87,7 +87,8 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
 
         Cache cacheService = CacheFactory.getInstall().getCacheService();
         List<Scope> matchPermScope = cacheService.getMatchPermScope();
-        List<Permission> permissions = new ArrayList<>();
+
+
         Permission permUser = new Permission();
         if (!owner) {
             for (Scope scope : matchPermScope) {
@@ -131,7 +132,7 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
 
         boolean admin = owner || permUser.isAdmin();
         if (admin) {
-            String addPermissions = "^\\+[(@?\\d{6,11})(global)]( +\\S+)+|添加权限@?\\d{6,11}( +\\S+)+";
+            String addPermissions = "^\\+((global|members?|list|user)?([-@]{0,2}((?=-)\\S+|(\\d+?)))?)( +\\S+)+|添加权限((global|members?|list|user)?([-@]{0,2}((?=-)\\S+|(\\d+?)))?)( +\\S+)+";
             if (Pattern.matches(addPermissions, content)) {
                 PermissionsControl.INSTANCE.addPermissions(message, subject, sender);
                 return;
