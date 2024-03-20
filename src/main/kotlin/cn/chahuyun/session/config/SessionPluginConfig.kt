@@ -17,7 +17,7 @@ import net.mamoe.mirai.console.data.value
 object SessionPluginConfig : AutoSavePluginConfig("config") {
 
     @ValueDescription("主人")
-    var owner: Long by value()
+    var owner: Long by value(12346L)
 
     @ValueDescription("数据库链接方式")
     var dataType: DataType by value(DataType.H2)
