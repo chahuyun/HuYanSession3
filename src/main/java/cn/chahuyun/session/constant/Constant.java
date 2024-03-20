@@ -44,5 +44,16 @@ public class Constant {
         add(Scope.Type.USERS);
     }};
 
+    /**
+     * 壶言会话内置权限字符
+     */
+    public static final List<String> HUYAN_SESSION_PERM_LIST = new ArrayList<>() {{
+        add("admin");
+        add("session");
+        add("hh");
+        add("dct");
+        add("ds");
+    }};
+
 
 }
