@@ -8,6 +8,7 @@ import cn.chahuyun.session.data.cache.CacheFactory;
 import cn.chahuyun.session.data.entity.Permission;
 import cn.chahuyun.session.data.entity.SingleSession;
 import cn.chahuyun.session.event.api.EventHanding;
+import cn.chahuyun.session.event.permissions.PermissionsControl;
 import cn.chahuyun.session.event.session.ManySessionControl;
 import cn.chahuyun.session.event.session.SingleSessionControl;
 import cn.chahuyun.session.send.DefaultSendMessage;
@@ -104,20 +105,23 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
         }
 
 
-        if (owner || permUser.isAdmin() || permUser.isSession() || permUser.isHh()) {
+        boolean hh = owner || permUser.isAdmin() || permUser.isSession() || permUser.isHh();
+        if (hh) {
             String studySimpleSession = "^xx( +\\S+){2,7}|^学习( +\\S+){2,7}";
             String removeSimpleSession = "^-xx( +\\S+){1,2}|^删除( +\\S+){1,2}";
             if (Pattern.matches(studySimpleSession, content)) {
                 log.debug("简单学习指令");
                 SingleSessionControl.INSTANCE.studySimpleSingleSession(message, subject, sender);
+                return;
             } else if (Pattern.matches(removeSimpleSession, content)) {
                 log.debug("简单删除指令");
                 SingleSessionControl.INSTANCE.removeSimpleSingleSession(message, subject, sender);
+                return;
             }
-            return;
         }
 
-        if (owner || permUser.isAdmin() || permUser.isSession() || permUser.isDct()) {
+        boolean dct = owner || permUser.isAdmin() || permUser.isSession() || permUser.isDct();
+        if (dct) {
             String studyManySession = "^%dct|^学习多词条";
             if (Pattern.matches(studyManySession, content)) {
                 ManySessionControl.INSTANCE.studyManySession(message, subject, sender);
@@ -125,6 +129,14 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
             }
         }
 
+        boolean admin = owner || permUser.isAdmin();
+        if (admin) {
+            String addPermissions = "^\\+[(@?\\d{6,11})(global)]( +\\S+)+|添加权限@?\\d{6,11}( +\\S+)+";
+            if (Pattern.matches(addPermissions, content)) {
+                PermissionsControl.INSTANCE.addPermissions(message, subject, sender);
+                return;
+            }
+        }
 
         //todo 匹配指令
         String addStudyPattern = "壶言3消息测试";
