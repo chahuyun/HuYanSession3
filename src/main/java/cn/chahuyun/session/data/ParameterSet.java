@@ -174,6 +174,22 @@ public class ParameterSet {
                     this.exception = true;
                     this.exceptionMsg = "你的参数有误:id 识别失败";
                 }
+            } else if (param.contains("+")||param.contains("-")){
+                MessageChain userMessage = MessageChain.deserializeFromMiraiCode(param, subject);
+                if (userMessage.contains(At.Key)) {
+                    At at = (At) userMessage.get(At.Key);
+                    if (at != null) {
+                        scope = new Scope(Scope.Type.GROUP_MEMBER, subject.getId(), at.getTarget());
+                    }
+                } else {
+                    try {
+                        long aLong = Long.parseLong(param.replace("+", "").replace("-",""));
+                        scope = new Scope(Scope.Type.GROUP_MEMBER, subject.getId(), aLong);
+                    } catch (NumberFormatException e) {
+                        this.exception = true;
+                        this.exceptionMsg = "你的参数有误:qq 识别失败";
+                    }
+                }
             }
         }
     }
