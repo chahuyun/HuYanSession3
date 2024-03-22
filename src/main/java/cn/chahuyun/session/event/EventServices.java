@@ -2,6 +2,7 @@ package cn.chahuyun.session.event;
 
 import cn.chahuyun.session.HuYanSession;
 import cn.chahuyun.session.constant.Constant;
+import cn.chahuyun.session.data.PermUser;
 import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.cache.Cache;
 import cn.chahuyun.session.data.cache.CacheFactory;
@@ -13,6 +14,7 @@ import cn.chahuyun.session.event.session.ManySessionControl;
 import cn.chahuyun.session.event.session.SingleSessionControl;
 import cn.chahuyun.session.send.DefaultSendMessage;
 import cn.chahuyun.session.utils.MatchingTool;
+import cn.chahuyun.session.utils.PermTool;
 import kotlin.coroutines.CoroutineContext;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.contact.Contact;
@@ -84,23 +86,18 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
         String content = message.contentToString();
 
         boolean owner = sender.getId() == HuYanSession.pluginConfig.getOwner();
+        PermUser permUser = new PermUser();
 
         Cache cacheService = CacheFactory.getInstall().getCacheService();
         List<Scope> matchPermScope = cacheService.getMatchPermScope();
 
-
-        Permission permUser = new Permission();
         if (!owner) {
             for (Scope scope : matchPermScope) {
                 if (MatchingTool.matchScope(scope, subject, sender)) {
-                    permissions = cacheService.getPermissions(scope);
+                    PermTool.margePerm(scope, permUser);
                 }
             }
-            if (permissions != null && !permissions.isEmpty()) {
-                for (Permission permission : permissions) {
-                    mergePerm(permUser, permission);
-                }
-            } else {
+            if (!permUser.isExist()) {
                 return;
             }
         }
@@ -152,17 +149,5 @@ public class EventServices extends SimpleListenerHost implements EventHanding {
     }
 
 
-    /**
-     * 合并权限
-     *
-     * @param permUser  源权限
-     * @param otherPerm 需要合并的权限
-     */
-    private void mergePerm(Permission permUser, Permission otherPerm) {
-        permUser.setAdmin(permUser.isAdmin() || otherPerm.isAdmin());
-        permUser.setSession(permUser.isSession() || otherPerm.isSession());
-        permUser.setHh(permUser.isHh() || otherPerm.isHh());
-        permUser.setDct(permUser.isDct() || otherPerm.isDct());
-        permUser.setDs(permUser.isDs() || otherPerm.isDs());
-    }
+
 }
