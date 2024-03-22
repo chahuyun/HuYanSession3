@@ -17,15 +17,11 @@ import net.mamoe.mirai.message.data.*;
  */
 public class DefaultSendMessage implements SendMessage {
 
-    private SingleSession singleSession;
-
     private final ManySession manySession;
-
     private final TimingSession timingSession;
-
     private final MessageEvent messageEvent;
-
     private final SendType sendType;
+    private SingleSession singleSession;
 
     public DefaultSendMessage(SingleSession singleSession, MessageEvent messageEvent) {
         this.singleSession = singleSession;

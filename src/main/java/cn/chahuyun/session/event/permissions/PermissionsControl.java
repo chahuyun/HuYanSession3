@@ -29,9 +29,10 @@ public class PermissionsControl {
 
     /**
      * 添加权限
+     *
      * @param messages 消息
-     * @param subject 发送载体
-     * @param sender 发送者
+     * @param subject  发送载体
+     * @param sender   发送者
      */
     public void addPermissions(MessageChain messages, Contact subject, User sender) {
         String content = messages.contentToString();
@@ -65,10 +66,7 @@ public class PermissionsControl {
         }
 
 
-
-
     }
-
 
 
 }

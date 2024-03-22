@@ -19,15 +19,12 @@ public class DynamicMessages {
         this.event = event;
     }
 
-    public String replace() {
-        return reply;
-    }
-
-
-
-
     public static boolean includeDynamic(String source) {
         return false;
+    }
+
+    public String replace() {
+        return reply;
     }
 
 }

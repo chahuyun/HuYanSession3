@@ -5,8 +5,6 @@ import cn.chahuyun.session.config.SessionAnswerConfig;
 import cn.chahuyun.session.config.SessionDataConfig;
 import cn.chahuyun.session.config.SessionPluginConfig;
 import cn.chahuyun.session.constant.Constant;
-import cn.chahuyun.session.data.entity.SingleSession;
-import cn.chahuyun.session.data.factory.DataFactory;
 import cn.chahuyun.session.event.EventRegister;
 import cn.chahuyun.session.manager.DataManager;
 import cn.chahuyun.session.manager.PluginManager;
@@ -16,8 +14,6 @@ import net.mamoe.mirai.console.extension.PluginComponentStorage;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 @Slf4j(topic = Constant.LOG_TOPIC)
 public final class HuYanSession extends JavaPlugin {
@@ -75,5 +71,10 @@ public final class HuYanSession extends JavaPlugin {
         EventRegister.init(this);
 
         log.info("HuYanSession3 加载完成!");
+    }
+
+    @Override
+    public void onDisable() {
+        log.info("HuYanSession3 已卸载,谢谢使用!");
     }
 }

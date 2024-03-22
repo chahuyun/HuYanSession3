@@ -174,7 +174,7 @@ public class ParameterSet {
                     this.exception = true;
                     this.exceptionMsg = "你的参数有误:id 识别失败";
                 }
-            } else if (param.contains("+")||param.contains("-")){
+            } else if (param.contains("+") || param.contains("-")) {
                 MessageChain userMessage = MessageChain.deserializeFromMiraiCode(param, subject);
                 if (userMessage.contains(At.Key)) {
                     At at = (At) userMessage.get(At.Key);
@@ -183,7 +183,7 @@ public class ParameterSet {
                     }
                 } else {
                     try {
-                        long aLong = Long.parseLong(param.replace("+", "").replace("-",""));
+                        long aLong = Long.parseLong(param.replace("+", "").replace("-", ""));
                         scope = new Scope(Scope.Type.GROUP_MEMBER, subject.getId(), aLong);
                     } catch (NumberFormatException e) {
                         this.exception = true;

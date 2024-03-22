@@ -36,51 +36,6 @@ public class Scope {
      */
 
     private final AbstractDataService dataService = DataFactory.getInstance().getDataService();
-
-    /**
-     * 作用域类型
-     */
-    public enum Type {
-        /**
-         * 全局
-         */
-        GLOBAL("global"),
-        /**
-         * 全局用户
-         */
-        GLOBAL_USER("global-%d"),
-        /**
-         * 群
-         */
-        GROUP("group-%d"),
-        /**
-         * 群用户
-         */
-        GROUP_MEMBER("group-%d-member-%d"),
-        /**
-         * 群分组用户
-         */
-        GROUP_MEMBERS("group-%d-membersName-%s"),
-        /**
-         * 分组群
-         */
-        LIST("list-%s"),
-        /**
-         * 分组用户
-         */
-        USERS("users-%s");
-
-        private final String valueTemplate;
-
-        Type(String valueTemplate) {
-            this.valueTemplate = valueTemplate;
-        }
-
-        public String getValueTemplate() {
-            return valueTemplate;
-        }
-    }
-
     /**
      * 标识
      */
@@ -125,66 +80,6 @@ public class Scope {
      * 分组人名称
      */
     private final String usersName;
-
-
-    /**
-     * 传入 scopeMark 进行识别Scope
-     *
-     * @param marker scopeMark
-     * @return scope
-     */
-    public static Scope fromScopeMarker(String marker) {
-        String[] parts = marker.split("-");
-        if (parts.length < 1) {
-            throw new IllegalArgumentException("scopeMarker格式不正确");
-        }
-
-        Type type;
-        try {
-            //只能匹配到 GLOBAL GROUP LIST USERS 四中类型
-            type = Type.valueOf(parts[0].toUpperCase());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("scopeMarker的类型格式不正确");
-        }
-
-        switch (type) {
-            case GLOBAL:
-                if (parts.length == 1) {
-                    return new Scope(type);
-                } else if (parts.length == 2) {
-                    return new Scope(Type.GLOBAL_USER, Long.parseLong(parts[1]));
-                } else {
-                    throw new IllegalArgumentException("GLOBAL类型的scopeMarker格式不正确");
-                }
-            case GROUP:
-                if (parts.length >= 2) {
-                    Long groupId = Long.parseLong(parts[1]);
-                    if (parts.length == 2) {
-                        return new Scope(type, groupId);
-                    } else if (parts.length == 4) {
-                        if (parts[3].equals("member")) {
-                            return new Scope(Type.GROUP_MEMBER, groupId, Long.parseLong(parts[3]));
-                        } else if (parts[3].equals("membersName")) {
-                            return new Scope(Type.GROUP_MEMBERS, groupId, parts[3]);
-                        }
-                    }
-                }
-                throw new IllegalArgumentException("GROUP类型的scopeMarker格式不正确");
-            case LIST:
-                if (parts.length != 2) {
-                    throw new IllegalArgumentException("LIST类型的scopeMarker格式不正确");
-                }
-                return new Scope(type, parts[1]);
-            case USERS:
-                if (parts.length != 2) {
-                    throw new IllegalArgumentException("USERS类型的scopeMarker格式不正确");
-                }
-                return new Scope(type, parts[1]);
-            default:
-                throw new IllegalArgumentException("无法识别的scopeMarker类型");
-        }
-    }
-
     /**
      * 构建全局作用域
      *
@@ -208,6 +103,7 @@ public class Scope {
         this.membersName = null;
     }
 
+
     /**
      * 构建全局用户或群作用域
      *
@@ -215,7 +111,7 @@ public class Scope {
      * @param groupOrUser 群id或用户id
      */
     public Scope(Type type, Long groupOrUser) {
-        if (!Constant.SCOPE_TYPE_SINGLE_PARAMETER.contains(type)) {
+        if (!Constant.SCOPE_TYPE_SINGLE_PARAMETER_LONG.contains(type)) {
             throw new IllegalArgumentException("作用域类型错误!");
         }
         this.type = type;
@@ -247,7 +143,7 @@ public class Scope {
      * @param listIdOrUsersName 分组群id或分组用户id
      */
     public Scope(Type type, String listIdOrUsersName) {
-        if (!Constant.SCOPE_TYPE_SINGLE_PARAMETER.contains(type)) {
+        if (!Constant.SCOPE_TYPE_SINGLE_PARAMETER_STRING.contains(type)) {
             throw new IllegalArgumentException("作用域类型错误!");
         }
         this.type = type;
@@ -325,6 +221,63 @@ public class Scope {
         this.membersName = null;
     }
 
+    /**
+     * 传入 scopeMark 进行识别Scope
+     *
+     * @param marker scopeMark
+     * @return scope
+     */
+    public static Scope fromScopeMarker(String marker) {
+        String[] parts = marker.split("-");
+        if (parts.length < 1) {
+            throw new IllegalArgumentException("scopeMarker格式不正确");
+        }
+
+        Type type;
+        try {
+            //只能匹配到 GLOBAL GROUP LIST USERS 四中类型
+            type = Type.valueOf(parts[0].toUpperCase());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("scopeMarker的类型格式不正确");
+        }
+
+        switch (type) {
+            case GLOBAL:
+                if (parts.length == 1) {
+                    return new Scope(type);
+                } else if (parts.length == 2) {
+                    return new Scope(Type.GLOBAL_USER, Long.parseLong(parts[1]));
+                } else {
+                    throw new IllegalArgumentException("GLOBAL类型的scopeMarker格式不正确");
+                }
+            case GROUP:
+                if (parts.length >= 2) {
+                    Long groupId = Long.parseLong(parts[1]);
+                    if (parts.length == 2) {
+                        return new Scope(type, groupId);
+                    } else if (parts.length == 4) {
+                        if (parts[3].equals("member")) {
+                            return new Scope(Type.GROUP_MEMBER, groupId, Long.parseLong(parts[3]));
+                        } else if (parts[3].equals("membersName")) {
+                            return new Scope(Type.GROUP_MEMBERS, groupId, parts[3]);
+                        }
+                    }
+                }
+                throw new IllegalArgumentException("GROUP类型的scopeMarker格式不正确");
+            case LIST:
+                if (parts.length != 2) {
+                    throw new IllegalArgumentException("LIST类型的scopeMarker格式不正确");
+                }
+                return new Scope(type, parts[1]);
+            case USERS:
+                if (parts.length != 2) {
+                    throw new IllegalArgumentException("USERS类型的scopeMarker格式不正确");
+                }
+                return new Scope(type, parts[1]);
+            default:
+                throw new IllegalArgumentException("无法识别的scopeMarker类型");
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -457,6 +410,50 @@ public class Scope {
      */
     private String concat(String name, String number) {
         return name + "(" + number + ")";
+    }
+
+    /**
+     * 作用域类型
+     */
+    public enum Type {
+        /**
+         * 全局
+         */
+        GLOBAL("global"),
+        /**
+         * 全局用户
+         */
+        GLOBAL_USER("global-%d"),
+        /**
+         * 群
+         */
+        GROUP("group-%d"),
+        /**
+         * 群用户
+         */
+        GROUP_MEMBER("group-%d-member-%d"),
+        /**
+         * 群分组用户
+         */
+        GROUP_MEMBERS("group-%d-membersName-%s"),
+        /**
+         * 分组群
+         */
+        LIST("list-%s"),
+        /**
+         * 分组用户
+         */
+        USERS("users-%s");
+
+        private final String valueTemplate;
+
+        Type(String valueTemplate) {
+            this.valueTemplate = valueTemplate;
+        }
+
+        public String getValueTemplate() {
+            return valueTemplate;
+        }
     }
 
 }
