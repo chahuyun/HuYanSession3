@@ -1,6 +1,7 @@
 package cn.chahuyun.session.data.factory;
 
 import cn.chahuyun.session.constant.Constant;
+import cn.chahuyun.session.data.BaseEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.intellij.lang.annotations.Language;
@@ -89,7 +90,10 @@ public class DefaultDataService extends AbstractDataService {
      */
     public boolean mergeEntityStatus(Object entity) {
         try {
-            this.sessionFactory.fromTransaction(session -> session.merge(entity));
+            Object o = this.sessionFactory.fromTransaction(session -> session.merge(entity));
+            if (o instanceof BaseEntity) {
+                return ((BaseEntity) o).getId() != null;
+            }
         } catch (Exception e) {
             log.error("保存实体错误", e);
             return false;
