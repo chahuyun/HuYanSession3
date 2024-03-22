@@ -45,6 +45,16 @@ public class PluginManager {
      * 加载插件的基础功能
      */
     public void pluginLoad() {
+        //加载缓存服务
+        Cache cache;
+        switch (config.getCacheType()) {
+            case REDIS:
+                log.warn("暂不支持redis缓存，将使用默认内存缓存");
+            case MEMORY:
+            default:
+                cache = new MemoryCache().init();
+        }
+        CacheFactory.init(cache);
 
         //加载权限
         HuYanPermissionService permissionService;
@@ -69,19 +79,6 @@ public class PluginManager {
         }
         isAuthorize = !(permissionService instanceof DefaultPermissions);
         PermissionsServiceFactory.init(permissionService);
-
-
-        //加载缓存服务
-        Cache cache;
-        switch (config.getCacheType()) {
-            case REDIS:
-                log.warn("暂不支持redis缓存，将使用默认内存缓存");
-            case MEMORY:
-            default:
-                cache = new MemoryCache().init();
-        }
-        CacheFactory.init(cache);
-
     }
 
     public boolean isAuthorize() {

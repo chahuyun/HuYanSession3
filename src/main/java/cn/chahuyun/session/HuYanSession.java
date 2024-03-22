@@ -1,5 +1,6 @@
 package cn.chahuyun.session;
 
+import cn.chahuyun.session.command.SessionCommand;
 import cn.chahuyun.session.config.SessionAnswerConfig;
 import cn.chahuyun.session.config.SessionDataConfig;
 import cn.chahuyun.session.config.SessionPluginConfig;
@@ -10,6 +11,7 @@ import cn.chahuyun.session.event.EventRegister;
 import cn.chahuyun.session.manager.DataManager;
 import cn.chahuyun.session.manager.PluginManager;
 import lombok.extern.slf4j.Slf4j;
+import net.mamoe.mirai.console.command.CommandManager;
 import net.mamoe.mirai.console.extension.PluginComponentStorage;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
@@ -60,6 +62,9 @@ public final class HuYanSession extends JavaPlugin {
         reloadPluginConfig(answerConfig);
         PluginManager.INSTANCE.configLoad(pluginConfig);
 
+        log.info("注册指令...");
+        CommandManager.INSTANCE.registerCommand(new SessionCommand(), false);
+
         log.info("加载数据库...");
         DataManager.init(this);
 
@@ -69,11 +74,6 @@ public final class HuYanSession extends JavaPlugin {
         log.info("注册事件");
         EventRegister.init(this);
 
-        List<SingleSession> singleSession = DataFactory.getInstance().getDataService().selectListEntity(SingleSession.class, "from SingleSession where trigger = '%s'", 123);
-        for (SingleSession singleMessage : singleSession) {
-            log.info("singleMessage->" + singleMessage);
-        }
-
-        getLogger().info("HuYanSession3 加载完成!");
+        log.info("HuYanSession3 加载完成!");
     }
 }
