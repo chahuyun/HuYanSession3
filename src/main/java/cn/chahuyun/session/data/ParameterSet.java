@@ -177,7 +177,7 @@ public class ParameterSet {
             } else if (param.contains("+") || param.contains("-")) {
                 MessageChain userMessage = MessageChain.deserializeFromMiraiCode(param, subject);
                 if (userMessage.contains(At.Key)) {
-                    At at = (At) userMessage.get(At.Key);
+                    At at = (At) userMessage.get(1);
                     if (at != null) {
                         scope = new Scope(Scope.Type.GROUP_MEMBER, subject.getId(), at.getTarget());
                     }
