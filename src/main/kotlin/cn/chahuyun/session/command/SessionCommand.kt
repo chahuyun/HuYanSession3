@@ -1,12 +1,7 @@
 package cn.chahuyun.session.command
 
 import cn.chahuyun.session.HuYanSession
-import cn.chahuyun.session.data.cache.CacheFactory
-import cn.chahuyun.session.data.entity.ManySession
-import cn.chahuyun.session.data.entity.Permission
-import cn.chahuyun.session.data.entity.SingleSession
-import cn.chahuyun.session.data.entity.TimingSession
-import cn.chahuyun.session.data.factory.DataFactory
+import cn.chahuyun.session.data.DataService
 import net.mamoe.mirai.console.command.CommandSender
 import net.mamoe.mirai.console.command.CompositeCommand
 
@@ -34,7 +29,16 @@ class SessionCommand : CompositeCommand(
     @Description("刷新缓存")
     suspend fun CommandSender.refresh() {
 
-        DataFactory.getInstance().dataService.refresh()
+        DataService.refresh()
+        sendMessage("缓存刷新成功！")
+    }
+
+
+    @SubCommand("repair")
+    @Description("修复")
+    suspend fun CommandSender.repair() {
+
+        DataService.refresh()
         sendMessage("缓存刷新成功！")
     }
 
