@@ -2,13 +2,12 @@ package cn.chahuyun.session.perm;
 
 import cn.chahuyun.api.permission.abnormal.NotExistHuYanPermissionException;
 import cn.chahuyun.api.permission.api.HuYanPermissionService;
+import cn.chahuyun.hibernateplus.HibernateFactory;
 import cn.chahuyun.session.constant.Constant;
 import cn.chahuyun.session.data.Scope;
 import cn.chahuyun.session.data.cache.Cache;
 import cn.chahuyun.session.data.cache.CacheFactory;
 import cn.chahuyun.session.data.entity.Permission;
-import cn.chahuyun.session.data.factory.AbstractDataService;
-import cn.chahuyun.session.data.factory.DataFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,11 +23,9 @@ public class DefaultPermissions implements HuYanPermissionService {
     private static final List<String> permList = Constant.HUYAN_SESSION_PERM_LIST;
 
     private final Cache cacheService;
-    private final AbstractDataService dataService;
 
     public DefaultPermissions() {
         cacheService = CacheFactory.getInstall().getCacheService();
-        dataService = DataFactory.getInstance().getDataService();
     }
 
     @Override
@@ -68,7 +65,7 @@ public class DefaultPermissions implements HuYanPermissionService {
         Permission permission = new Permission();
         permission.setPermCode(permCode);
         permission.setScope(scope);
-        if (!dataService.mergeEntityStatus(permission)) {
+        if (HibernateFactory.merge(permission).getId() == null) {
             return false;
         }
 
@@ -98,7 +95,7 @@ public class DefaultPermissions implements HuYanPermissionService {
                 .filter(it -> it.getPermCode().equals(permCode))
                 .findFirst()
                 .map(it -> {
-                    boolean deleteEntity = dataService.deleteEntity(it);
+                    boolean deleteEntity = HibernateFactory.delete(it);
                     if (deleteEntity) {
                         cacheService.removePermissions(it.getId());
                         return true;
@@ -123,7 +120,7 @@ public class DefaultPermissions implements HuYanPermissionService {
         }
 
         for (Permission permission : permissions) {
-            if (dataService.deleteEntity(permission)) {
+            if (HibernateFactory.delete(permission)) {
                 cacheService.removePermissions(permission.getId());
             }
         }
