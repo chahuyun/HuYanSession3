@@ -1,5 +1,6 @@
 package cn.chahuyun.session.event.session;
 
+import cn.chahuyun.hibernateplus.HibernateFactory;
 import cn.chahuyun.session.HuYanSession;
 import cn.chahuyun.session.constant.Constant;
 import cn.chahuyun.session.data.ParameterSet;
@@ -8,8 +9,6 @@ import cn.chahuyun.session.data.cache.Cache;
 import cn.chahuyun.session.data.cache.CacheFactory;
 import cn.chahuyun.session.data.cache.MemoryCache;
 import cn.chahuyun.session.data.entity.SingleSession;
-import cn.chahuyun.session.data.factory.AbstractDataService;
-import cn.chahuyun.session.data.factory.DataFactory;
 import cn.chahuyun.session.enums.MatchTriggerType;
 import cn.chahuyun.session.enums.SessionType;
 import cn.chahuyun.session.send.LocalMessage;
@@ -165,7 +164,7 @@ public class SingleSessionControl {
 
 
         String result;
-        if (DataFactory.getInstance().getDataService().mergeEntityStatus(singleSession)) {
+        if (HibernateFactory.merge(singleSession).getId() != null) {
             result = AnswerTool.getAnswer(answerConfig.getStudySuccess());
             cacheService.putSession(singleSession);
         } else {
@@ -263,7 +262,7 @@ public class SingleSessionControl {
         singleSession.setLocal(parameterSet.isLocalCache());
 
         String result;
-        if (DataFactory.getInstance().getDataService().mergeEntityStatus(singleSession)) {
+        if (HibernateFactory.merge(singleSession).getId() != null) {
             result = AnswerTool.getAnswer(answerConfig.getStudySuccess());
             cacheService.putSession(singleSession);
         } else {
@@ -307,14 +306,13 @@ public class SingleSessionControl {
         }
 
         Cache cacheService = CacheFactory.getInstall().getCacheService();
-        AbstractDataService dataService = DataFactory.getInstance().getDataService();
         List<SingleSession> singSession = cacheService.getSingSession(scope);
 
         if (parameterSet.getId() != null) {
             for (SingleSession singleSession : singSession) {
                 if (Objects.equals(singleSession.getId(), parameterSet.getId().intValue())) {
                     if (trigger.equals(singleSession.getTrigger())) {
-                        if (dataService.deleteEntity(singleSession)) {
+                        if (HibernateFactory.delete(singleSession)) {
                             cacheService.removeSingSession(singleSession.getId());
                             subject.sendMessage(AnswerTool.getAnswer(answerConfig.getRemoveSuccess()));
                         } else {
@@ -327,7 +325,7 @@ public class SingleSessionControl {
             for (Iterator<SingleSession> iterator = singSession.iterator(); iterator.hasNext(); ) {
                 SingleSession singleSession = iterator.next();
                 if (trigger.equals(singleSession.getTrigger())) {
-                    if (dataService.deleteEntity(singleSession)) {
+                    if (HibernateFactory.delete(singleSession)) {
                         iterator.remove();
                         subject.sendMessage(AnswerTool.getAnswer(answerConfig.getRemoveSuccess()));
                     } else {
@@ -346,9 +344,8 @@ public class SingleSessionControl {
         if (HuYanSession.pluginConfig.getDevTool()) {
             log.debug("匹配指令用时:{}ns", TimingUtil.getResults(Thread.currentThread().getName()));
         }
-        AbstractDataService dataService = DataFactory.getInstance().getDataService();
         Cache cacheService = CacheFactory.getInstall().getCacheService();
-        List<SingleSession> SingleSessions = dataService.selectListEntity(SingleSession.class, "from SingleSession ");
+        List<SingleSession> SingleSessions = HibernateFactory.selectList(SingleSession.class);
         SingleSessions.forEach(cacheService::putSession);
         subject.sendMessage("单一缓存刷新成功!");
         if (HuYanSession.pluginConfig.getDevTool()) {
@@ -359,8 +356,9 @@ public class SingleSessionControl {
 
     /**
      * 引用删除
+     *
      * @param messages 消息
-     * @param subject 载体
+     * @param subject  载体
      */
     public void removeSimpleSingleSessionFormQuery(MessageChain messages, Contact subject) {
         if (HuYanSession.pluginConfig.getDevTool()) {
@@ -384,7 +382,7 @@ public class SingleSessionControl {
 
         Cache cacheService = CacheFactory.getInstall().getCacheService();
         SingleSession singSession = cacheService.getSingSession(sessionId);
-        if (DataFactory.getInstance().getDataService().deleteEntity(singSession)) {
+        if (HibernateFactory.delete(singSession)) {
             cacheService.removeSingSession(sessionId);
             subject.sendMessage(AnswerTool.getAnswer(answerConfig.getRemoveSuccess()));
         } else {

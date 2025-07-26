@@ -1,8 +1,6 @@
 package cn.chahuyun.session.data;
 
 import cn.chahuyun.session.constant.Constant;
-import cn.chahuyun.session.data.factory.AbstractDataService;
-import cn.chahuyun.session.data.factory.DataFactory;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.Bot;
@@ -34,7 +32,6 @@ public class Scope {
     //todo 预留的Scope优化
      */
 
-    private final AbstractDataService dataService = DataFactory.getInstance().getDataService();
     /**
      * 标识
      */
@@ -149,14 +146,14 @@ public class Scope {
         this.type = type;
         if (type == Type.USERS) {
             this.usersName = listIdOrUsersName;
-            this.users = dataService.getGroupedLists(listIdOrUsersName).getValueList();
+            this.users = DataService.getGroupedLists(listIdOrUsersName).getValueList();
         } else {
             this.users = null;
             this.usersName = null;
         }
         if (type == Type.LIST) {
             this.listName = listIdOrUsersName;
-            this.groups = dataService.getGroupedLists(listIdOrUsersName).getValueList();
+            this.groups = DataService.getGroupedLists(listIdOrUsersName).getValueList();
         } else {
             this.listName = null;
             this.groups = null;
@@ -208,7 +205,7 @@ public class Scope {
         }
         this.group = group;
 
-        this.members = dataService.getGroupedLists(memberName).getValueList();
+        this.members = DataService.getGroupedLists(memberName).getValueList();
         this.marker = String.format(type.valueTemplate, group, memberName);
         this.type = type;
 
@@ -299,6 +296,7 @@ public class Scope {
         if (!instances.isEmpty()) {
             bot = instances.get(0);
         }
+        String groupName;
         switch (type) {
             case GLOBAL:
                 return "全局";
@@ -317,7 +315,7 @@ public class Scope {
                 }
                 return String.format("全局用户-%s", name);
             case GROUP:
-                String groupName = getGroup().toString();
+                groupName = getGroup().toString();
                 if (bot != null) {
                     Group group = bot.getGroup(getGroup());
                     if (group != null) {

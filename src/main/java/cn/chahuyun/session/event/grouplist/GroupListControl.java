@@ -1,9 +1,9 @@
 package cn.chahuyun.session.event.grouplist;
 
+import cn.chahuyun.hibernateplus.HibernateFactory;
 import cn.chahuyun.session.constant.Constant;
+import cn.chahuyun.session.data.DataService;
 import cn.chahuyun.session.data.entity.GroupedLists;
-import cn.chahuyun.session.data.factory.AbstractDataService;
-import cn.chahuyun.session.data.factory.DataFactory;
 import cn.chahuyun.session.utils.MessageTool;
 import lombok.extern.slf4j.Slf4j;
 import net.mamoe.mirai.contact.Contact;
@@ -71,8 +71,7 @@ public class GroupListControl {
             return;
         }
 
-        AbstractDataService dataService = DataFactory.getInstance().getDataService();
-        GroupedLists groupedLists = dataService.selectResultEntity(GroupedLists.class, "from GroupedLists where name = '%s'", name);
+        GroupedLists groupedLists = HibernateFactory.selectOne(GroupedLists.class, "name", name);
         if (groupedLists == null) {
             groupedLists = new GroupedLists(type, name, longs);
         } else {
@@ -89,13 +88,13 @@ public class GroupListControl {
             groupedLists.setValueList(valueList);
         }
 
-        if (dataService.mergeEntityStatus(groupedLists)) {
+        if (HibernateFactory.merge(groupedLists).getId() != null) {
             subject.sendMessage("群组更新成功!");
         } else {
             subject.sendMessage("群组更新失败!");
         }
 
-        dataService.refresh();
+        DataService.refresh();
     }
 
 }

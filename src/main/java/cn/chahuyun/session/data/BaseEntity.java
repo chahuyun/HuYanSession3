@@ -2,6 +2,8 @@ package cn.chahuyun.session.data;
 
 import cn.chahuyun.session.data.api.ScopeAcquisition;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 基础类
@@ -9,6 +11,8 @@ import jakarta.persistence.*;
  * @author Moyuyanli
  * @date 2024/1/3 15:26
  */
+@Setter
+@Getter
 @MappedSuperclass
 public class BaseEntity implements ScopeAcquisition {
 
@@ -43,19 +47,4 @@ public class BaseEntity implements ScopeAcquisition {
         this.scopeMarker = scope.getMarker();
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getScopeMarker() {
-        return scopeMarker;
-    }
-
-    public void setScopeMarker(String scopeMarker) {
-        this.scopeMarker = scopeMarker;
-    }
 }

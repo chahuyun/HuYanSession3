@@ -1,11 +1,16 @@
 package cn.chahuyun.session.data;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 权限用户
  *
  * @author Moyuyanli
  * @date 2024/3/22 16:35
  */
+@Setter
+@Getter
 public class PermUser {
 
     private boolean admin;
@@ -27,46 +32,6 @@ public class PermUser {
         this.session = session;
         this.hh = hh;
         this.dct = dct;
-        this.ds = ds;
-    }
-
-    public boolean isAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
-    }
-
-    public boolean isSession() {
-        return session;
-    }
-
-    public void setSession(boolean session) {
-        this.session = session;
-    }
-
-    public boolean isHh() {
-        return hh;
-    }
-
-    public void setHh(boolean hh) {
-        this.hh = hh;
-    }
-
-    public boolean isDct() {
-        return dct;
-    }
-
-    public void setDct(boolean dct) {
-        this.dct = dct;
-    }
-
-    public boolean isDs() {
-        return ds;
-    }
-
-    public void setDs(boolean ds) {
         this.ds = ds;
     }
 

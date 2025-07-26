@@ -1,5 +1,6 @@
 package cn.chahuyun.session.event.session;
 
+import cn.chahuyun.hibernateplus.HibernateFactory;
 import cn.chahuyun.session.HuYanSession;
 import cn.chahuyun.session.constant.Constant;
 import cn.chahuyun.session.data.ParameterSet;
@@ -8,8 +9,6 @@ import cn.chahuyun.session.data.cache.Cache;
 import cn.chahuyun.session.data.cache.CacheFactory;
 import cn.chahuyun.session.data.entity.ManySession;
 import cn.chahuyun.session.data.entity.ManySessionSubItem;
-import cn.chahuyun.session.data.factory.AbstractDataService;
-import cn.chahuyun.session.data.factory.DataFactory;
 import cn.chahuyun.session.enums.MatchTriggerType;
 import cn.chahuyun.session.send.DynamicMessages;
 import cn.chahuyun.session.send.LocalMessage;
@@ -25,8 +24,6 @@ import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.contact.User;
 import net.mamoe.mirai.event.events.MessageEvent;
 import net.mamoe.mirai.message.data.*;
-import xyz.cssxsh.mirai.hibernate.MiraiHibernateRecorder;
-import xyz.cssxsh.mirai.hibernate.entry.MessageRecord;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -141,11 +138,10 @@ public class ManySessionControl {
 
         manySession.addAll(items);
 
-        AbstractDataService dataService = DataFactory.getInstance().getDataService();
 
         boolean add = manySession.getId() == null;
 
-        if (dataService.mergeEntityStatus(manySession)) {
+        if (HibernateFactory.merge(manySession).getId() != null) {
             cacheService.putSession(manySession);
             if (add) {
                 subject.sendMessage(AnswerTool.getAnswer(HuYanSession.answerConfig.getStudySuccess()));
@@ -179,25 +175,17 @@ public class ManySessionControl {
 
         QuoteReply quoteReply = messages.get(QuoteReply.Key);
 
-        List<MessageRecord> messageRecords;
+        MessageSource source;
         if (quoteReply != null) {
-            MessageSource source = quoteReply.getSource();
-            messageRecords = MiraiHibernateRecorder.INSTANCE.get(source);
+            source = quoteReply.getSource();
         } else {
             log.error("群典功能获取引用消息失败");
             return;
         }
 
-        if (messageRecords.isEmpty()) {
-            log.error("群典功能获取引用消息失败");
-            return;
-        }
+        String nick = Objects.requireNonNull(group.get(source.getFromId())).getNick();
 
-        MessageRecord messageRecord = messageRecords.get(0);
-
-        String nick = Objects.requireNonNull(group.get(messageRecord.getFromId())).getNick();
-
-        MessageChain originalMessage = messageRecord.toMessageChain();
+        MessageChain originalMessage = source.getOriginalMessage();
 
         boolean isPlain = true;
 
@@ -237,7 +225,7 @@ public class ManySessionControl {
 
         manySessionSubItem.setDynamic(dynamic);
 
-        ManySession manySession = new ManySession();
+        ManySession manySession = null;
         Scope scope = Scope.group(subject);
 
         Cache cacheService = CacheFactory.getInstall().getCacheService();
@@ -251,9 +239,8 @@ public class ManySessionControl {
             }
         }
 
-        manySession.add(manySessionSubItem);
-
-        if (manySession.getId() == null) {
+        if (manySession == null) {
+            manySession = new ManySession();
             manySession.setScope(scope);
             manySession.setTrigger(groupClassicName);
             manySession.setProbability(1.0);
@@ -261,9 +248,10 @@ public class ManySessionControl {
             manySession.setMatchType(MatchTriggerType.PRECISION);
         }
 
-        AbstractDataService dataService = DataFactory.getInstance().getDataService();
+        manySession.add(manySessionSubItem);
 
-        ManySession mergeEntity = dataService.mergeEntity(manySession);
+
+        ManySession mergeEntity = HibernateFactory.merge(manySession);
         if (mergeEntity.getId() != null) {
             subject.sendMessage("入典成功!");
             cacheService.putSession(mergeEntity);
@@ -317,7 +305,6 @@ public class ManySessionControl {
             }
         }
 
-        AbstractDataService dataService = DataFactory.getInstance().getDataService();
 
         if (type || split.length == 2) {
             subject.sendMessage("请输入双‘!’确认删除多词条集!");
@@ -329,7 +316,7 @@ public class ManySessionControl {
                 return;
             }
             if (content.equals("!!") || content.equals("！！")) {
-                if (dataService.deleteEntity(manySession)) {
+                if (HibernateFactory.delete(manySession)) {
                     cacheService.removeManySession(manySession.getId());
                     subject.sendMessage(AnswerTool.getAnswer(HuYanSession.answerConfig.getRemoveSuccess()));
                 } else {
@@ -352,7 +339,7 @@ public class ManySessionControl {
         int success = 0;
         int failed = 0;
         for (ManySessionSubItem item : items) {
-            if (dataService.deleteEntity(item)) {
+            if (HibernateFactory.delete(item)) {
                 manySession.getChild().remove(item);
                 cacheService.putSession(manySession);
                 success++;
@@ -383,9 +370,8 @@ public class ManySessionControl {
         if (HuYanSession.pluginConfig.getDevTool()) {
             log.debug("匹配指令用时:{}ns", TimingUtil.getResults(Thread.currentThread().getName()));
         }
-        AbstractDataService dataService = DataFactory.getInstance().getDataService();
         Cache cacheService = CacheFactory.getInstall().getCacheService();
-        List<ManySession> manySessions = dataService.selectListEntity(ManySession.class, "from ManySession");
+        List<ManySession> manySessions = HibernateFactory.selectList(ManySession.class);
         manySessions.forEach(cacheService::putSession);
         subject.sendMessage("多词条缓存刷新成功!");
         if (HuYanSession.pluginConfig.getDevTool()) {
@@ -422,7 +408,7 @@ public class ManySessionControl {
             return;
         }
 
-        if (DataFactory.getInstance().getDataService().deleteEntity(subItem)) {
+        if (HibernateFactory.delete(subItem)) {
             manySession.getChild().remove(subItem);
             cacheService.putSession(manySession);
             subject.sendMessage(AnswerTool.getAnswer(answerConfig.getRemoveSuccess()));
